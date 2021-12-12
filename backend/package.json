@@ -1,0 +1,28 @@
+{
+  "name": "@keystonejs/example-projects-starter",
+  "description": "An example KeystoneJS project with a User list and Authentication.",
+  "private": true,
+  "version": "6.0.4",
+  "author": "The KeystoneJS Development Team",
+  "repository": "https://github.com/keystonejs/keystone-5/tree/main/packages/create-keystone-5-app/example-projects/starter",
+  "homepage": "https://github.com/keystonejs/keystone-5",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development DISABLE_LOGGING=true keystone dev",
+    "build": "cross-env NODE_ENV=production keystone build",
+    "start": "cross-env NODE_ENV=production keystone start",
+    "create-tables": "cross-env CREATE_TABLES=true keystone create-tables"
+  },
+  "dependencies": {
+    "@keystonejs/adapter-mongoose": "^11.2.2",
+    "@keystonejs/app-admin-ui": "^7.5.2",
+    "@keystonejs/app-graphql": "^6.3.2",
+    "@keystonejs/auth-password": "^6.1.2",
+    "@keystonejs/fields": "^22.1.3",
+    "@keystonejs/keystone": "^19.3.3",
+    "cross-env": "^7.0.3"
+  }
+}

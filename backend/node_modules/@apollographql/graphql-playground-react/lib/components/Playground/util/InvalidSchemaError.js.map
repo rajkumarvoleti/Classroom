@@ -1,0 +1,1 @@
+{"version":3,"file":"InvalidSchemaError.js","sourceRoot":"","sources":["../../../../src/components/Playground/util/InvalidSchemaError.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;AAEA;IAAwC,sCAAK;IAC3C,4BAAY,gBAAyC;eACnD,kBACE,4BAA0B,gBAAgB,CAAC,IAAI,CAAC,IAAI,CAAG,CACxD;IACH,CAAC;IACH,yBAAC;AAAD,CAAC,AAND,CAAwC,KAAK,GAM5C;AANY,gDAAkB"}

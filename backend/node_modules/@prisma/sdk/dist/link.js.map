@@ -1,0 +1,1 @@
+{"version":3,"file":"link.js","sourceRoot":"","sources":["../src/link.ts"],"names":[],"mappings":";;;;;;AAAA,kEAAwC;AACxC,kDAAyB;AAEzB,SAAgB,IAAI,CAAC,GAAG;IACtB,OAAO,uBAAY,CAAC,GAAG,EAAE,GAAG,EAAE;QAC5B,QAAQ,EAAE,CAAC,GAAG,EAAE,EAAE,CAAC,eAAK,CAAC,SAAS,CAAC,GAAG,CAAC;KACxC,CAAC,CAAA;AACJ,CAAC;AAJD,oBAIC"}
