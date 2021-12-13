@@ -1,4 +1,5 @@
 import { ApolloProvider } from "@apollo/client";
+import { SessionProvider } from "next-auth/react";
 import { getApolloClient } from "../data/apollo";
 import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "../lib/createEmotionCache";
@@ -15,19 +16,20 @@ export default function MyApp(props) {
   const client = getApolloClient();
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [mode, setMode] = useState("light");
-
   const theme = React.useMemo(() => createTheme(getDesignToken(mode)), [mode]);
 
   return (
     <ApolloProvider client={client}>
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <GlobalStyles />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </CacheProvider>
+      <SessionProvider session={pageProps?.session}>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <GlobalStyles />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </CacheProvider>
+      </SessionProvider>
     </ApolloProvider>
   );
 }

@@ -7,7 +7,6 @@ import homePageImg from "../images/homePageImg.png";
 import wave from "../images/WaveSVG2.png";
 import { Button } from "@mui/material";
 import { BackgroundParticles } from "../components/BackgroundParticles";
-import { Box } from "@mui/system";
 
 export default function HomePage() {
   const theme = useTheme();
@@ -94,7 +93,7 @@ export default function HomePage() {
 
         <img src={wave.src} alt="wrong path" style={styles.wave} />
       </div>
-      <div></div>
+      
     </div>
   );
 }

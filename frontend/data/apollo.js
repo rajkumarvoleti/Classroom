@@ -30,11 +30,3 @@ export function getApolloClient(forceNew) {
 
   return CLIENT;
 }
-
-export const QUERY = gql`
-  query {
-    allUsers {
-      name
-    }
-  }
-`;

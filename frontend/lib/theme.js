@@ -7,6 +7,7 @@ const getDesignTokens = (mode) => ({
     darkblue: "#265099",
     green: "#328985",
     darkgreen: "#006470",
+    orange: "#EB6B54",
     ...(mode === "light"
       ? {
           background: {

@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@emotion/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -38,7 +39,9 @@ export default function AppBarMenu() {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    // setAnchorElUser(event.currentTarget);
+    if (session) signOut();
+    else signIn();
   };
 
   const handleCloseNavMenu = () => {
@@ -62,6 +65,8 @@ export default function AppBarMenu() {
       transition: "background-color 0.5s ease",
     },
   };
+
+  const { data: session } = useSession();
 
   return (
     <AppBar style={top ? styles.appbar1 : styles.appbar2} position="fixed">
