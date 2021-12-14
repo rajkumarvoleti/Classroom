@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@emotion/react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import logo from "../images/logoBg.png";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -77,6 +78,11 @@ export default function AppBarMenu1() {
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
+            <img
+              style={{ margin: "0 10px", width: "60px", height: "auto" }}
+              src={logo.src}
+              alt="logo"
+            />
             Class Room
           </Typography>
 
@@ -127,6 +133,11 @@ export default function AppBarMenu1() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
+            <img
+              style={{ margin: "0 10px", width: "60px", height: "auto" }}
+              src={logo.src}
+              alt="logo"
+            />
             Class Room
           </Typography>
           <Box
@@ -195,6 +206,9 @@ export default function AppBarMenu1() {
               sx={{
                 backgroundColor: "darkblue",
                 color: "white",
+                "&:hover": {
+                  backgroundColor: "blue",
+                },
               }}
               onClick={signIn}
             >
