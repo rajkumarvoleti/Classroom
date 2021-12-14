@@ -1,4 +1,4 @@
-import AppBarMenu from "../components/AppBarMenu";
+import AppBarMenu1 from "../components/AppBarMenu1";
 import background from "../images/gradient.png";
 import Grid from "@mui/material/Grid";
 import { useTheme } from "@emotion/react";
@@ -70,7 +70,7 @@ export default function HomePage() {
   return (
     <div>
       <div style={styles.main}>
-        <AppBarMenu />
+        <AppBarMenu1 />
         <BackgroundParticles />
         <Grid container spacing={2} sx={styles.grid}>
           <Grid item md={12} lg={6} sx={styles.head}>
@@ -93,7 +93,6 @@ export default function HomePage() {
 
         <img src={wave.src} alt="wrong path" style={styles.wave} />
       </div>
-      
     </div>
   );
 }

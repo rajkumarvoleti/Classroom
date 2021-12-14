@@ -4,7 +4,7 @@ const getDesignTokens = (mode) => ({
     mode,
     white: "#FEFEFF",
     blue: "#2357B8",
-    darkblue: "#265099",
+    darkblue: "#244576",
     green: "#328985",
     darkgreen: "#006470",
     orange: "#EB6B54",

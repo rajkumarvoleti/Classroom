@@ -1,4 +1,4 @@
-const { Text, Checkbox, Password } = require("@keystonejs/fields");
+const { Text, Checkbox, Password, Url } = require("@keystonejs/fields");
 
 module.exports = {
   fields: {
@@ -17,6 +17,9 @@ module.exports = {
     },
     password: {
       type: Password,
+    },
+    image: {
+      type: Url,
     },
   },
   // List-level access controls
