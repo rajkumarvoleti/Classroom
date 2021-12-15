@@ -6,13 +6,16 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
+import AddIcon from "@mui/icons-material/Add";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@emotion/react";
-import { useSession, signOut } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import logo from "../images/logoBg.png";
+import { Drawer, List, ListItem } from "@mui/material";
+import { DarkmodeSwitch } from "./DarkmodeSwitch";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -21,7 +24,13 @@ export default function AppBarMenu2() {
   const { palette } = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const { data: session } = useSession();
+  const [user, setUser] = React.useState(null);
+
+  React.useEffect(() => {
+    getSession().then((res) => {
+      if (res?.user) setUser(res.user);
+    });
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -31,7 +40,10 @@ export default function AppBarMenu2() {
   };
 
   const handleCloseNavMenu = (setting) => {
-    if (setting === "Logout") signOut();
+    if (setting === "Logout")
+      signOut({
+        callbackUrl: "/",
+      });
     setAnchorElNav(null);
   };
 
@@ -47,6 +59,8 @@ export default function AppBarMenu2() {
     },
   };
 
+  if (!user) return <p></p>;
+
   return (
     <AppBar style={styles.appbar} position="fixed">
       <Container maxWidth="xl">
@@ -54,7 +68,7 @@ export default function AppBarMenu2() {
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "flex", md: "none" },
+              display: "flex",
             }}
           >
             <IconButton
@@ -67,13 +81,10 @@ export default function AppBarMenu2() {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
+            <Drawer
               id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
+              key="left"
               keepMounted
               transformOrigin={{
                 vertical: "top",
@@ -82,22 +93,24 @@ export default function AppBarMenu2() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none" },
+                display: "flex",
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+              <List sx={{ width: "200px" }}>
+                {pages.map((page) => (
+                  <ListItem key={page} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page}</Typography>
+                  </ListItem>
+                ))}
+              </List>
+            </Drawer>
           </Box>
 
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{ mr: 2, display: "flex", flexGrow: 1 }}
           >
             <img
               style={{ margin: "0 10px", width: "60px", height: "auto" }}
@@ -107,13 +120,25 @@ export default function AppBarMenu2() {
             Class Room
           </Typography>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
+            <Box>
+              <DarkmodeSwitch />
+            </Box>
+            <IconButton
+              aria-label="add classroom"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+              sx={{ mx: "10px" }}
+            >
+              <AddIcon sx={{ fontSize: "30px" }} />
+            </IconButton>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   sx={{ border: "1px solid darkblue" }}
                   alt="Remy Sharp"
-                  src={session.user.image}
+                  src={user.image}
                 />
               </IconButton>
             </Tooltip>

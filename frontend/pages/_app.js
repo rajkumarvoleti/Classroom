@@ -1,5 +1,5 @@
 import { ApolloProvider } from "@apollo/client";
-import { SessionProvider } from "next-auth/react";
+import { getSession, SessionProvider } from "next-auth/react";
 import { getApolloClient } from "../data/apollo";
 import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "../lib/createEmotionCache";
@@ -10,6 +10,8 @@ import React, { useEffect, useState } from "react";
 import getDesignToken from "../lib/theme";
 import GlobalStyles from "../lib/GlobalStyles";
 import Loading from "../components/Loading";
+import { useRouter } from "next/router";
+import AppBarMenu2 from "../components/AppBarMenu2";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -18,17 +20,35 @@ export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [mode, setMode] = useState("light");
   const theme = React.useMemo(() => createTheme(getDesignToken(mode)), [mode]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [home, setHome] = useState(false);
 
   const startLoading = () => setLoading(true);
   const stopLoading = () => setLoading(false);
 
   useEffect(() => {
-    window.addEventListener("loadstart", startLoading);
-    window.addEventListener("load", stopLoading);
+    router.events.on("routeChangeStart", startLoading);
+    router.events.on("routeChangeComplete", stopLoading);
+    router.events.on("routeChangeError", stopLoading);
     return () => {
-      window.removeEventListener("loadstart", startLoading);
-      window.removeEventListener("load", stopLoading);
+      router.events.off("routeChangeStart", startLoading);
+      router.events.off("routeChangeComplete", stopLoading);
+      router.events.off("routeChangeError", stopLoading);
+    };
+  }, []);
+
+  const handleRouteChange = (url) => {
+    console.log(url);
+    if (url === "/") setHome(true);
+    else setHome(false);
+  };
+
+  useEffect(() => {
+    handleRouteChange(router.pathname);
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, []);
 
@@ -39,9 +59,9 @@ export default function MyApp(props) {
       <SessionProvider session={pageProps?.session}>
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             <GlobalStyles />
+            {!home && <AppBarMenu2 />}
             <Component {...pageProps} />
           </ThemeProvider>
         </CacheProvider>

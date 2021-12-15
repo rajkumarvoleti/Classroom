@@ -12,18 +12,17 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@emotion/react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { getSession, signIn, signOut } from "next-auth/react";
 import logo from "../images/logoBg.png";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-export default function AppBarMenu1() {
+export default function AppBarMenu1({ user }) {
   const { palette } = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [top, setTop] = React.useState(true);
-  const { data: session } = useSession();
 
   function changeAppBarStyles() {
     if (window.pageYOffset === 0) setTop(true);
@@ -162,14 +161,14 @@ export default function AppBarMenu1() {
             ))}
           </Box>
 
-          {session && (
+          {user && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
                     sx={{ border: "1px solid darkblue" }}
                     alt="Remy Sharp"
-                    src={session.user.image}
+                    src={user.image}
                   />
                 </IconButton>
               </Tooltip>
@@ -200,7 +199,7 @@ export default function AppBarMenu1() {
               </Menu>
             </Box>
           )}
-          {!session && (
+          {!user && (
             <Button
               sx={{
                 backgroundColor: "darkblue",

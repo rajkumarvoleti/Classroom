@@ -1,4 +1,3 @@
-import AppBarMenu1 from "../components/AppBarMenu1";
 import background from "../images/gradient.png";
 import Grid from "@mui/material/Grid";
 import { useTheme } from "@emotion/react";
@@ -8,12 +7,15 @@ import wave from "../images/WaveSVG2.png";
 import { Button } from "@mui/material";
 import { BackgroundParticles } from "../components/BackgroundParticles";
 import { useRouter } from "next/dist/client/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, getSession } from "next-auth/react";
+import AppBarMenu1 from "../components/AppBarMenu1";
+import { getServerSession } from "next-auth";
 
-export default function HomePage() {
+export default function HomePage({ user }) {
+  console.log(user);
   const router = useRouter();
   const theme = useTheme();
-  const { data: session } = useSession();
+
   const styles = {
     main: {
       backgroundImage: `url(${background.src})`,
@@ -72,14 +74,15 @@ export default function HomePage() {
   };
 
   const goToClassroom = async () => {
-    if (!session) signIn();
-    router.push("/dashboard");
+    signOut();
+    // if (!user) signIn();
+    // router.push("/app/dashboard");
   };
 
   return (
     <div>
+      <AppBarMenu1 user={user} />
       <div style={styles.main}>
-        <AppBarMenu1 />
         <BackgroundParticles />
         <Grid container spacing={2} sx={styles.grid}>
           <Grid item md={12} lg={6} sx={styles.head}>
@@ -109,4 +112,14 @@ export default function HomePage() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const session = await getServerSession(context);
+  return {
+    props: {
+      user: "hello",
+    },
+  };
 }
