@@ -7,9 +7,13 @@ import homePageImg from "../images/homePageImg.png";
 import wave from "../images/WaveSVG2.png";
 import { Button } from "@mui/material";
 import { BackgroundParticles } from "../components/BackgroundParticles";
+import { useRouter } from "next/dist/client/router";
+import { signIn, useSession } from "next-auth/react";
 
 export default function HomePage() {
+  const router = useRouter();
   const theme = useTheme();
+  const { data: session } = useSession();
   const styles = {
     main: {
       backgroundImage: `url(${background.src})`,
@@ -67,6 +71,11 @@ export default function HomePage() {
     },
   };
 
+  const goToClassroom = async () => {
+    if (!session) signIn();
+    router.push("/dashboard");
+  };
+
   return (
     <div>
       <div style={styles.main}>
@@ -82,7 +91,12 @@ export default function HomePage() {
               Microsoft Teams, forming meaningful relationships, and helping
               schools deliver the ultimate learning experience.
             </p>
-            <Button size="large" sx={styles.headButton} variant="contained">
+            <Button
+              onClick={goToClassroom}
+              size="large"
+              sx={styles.headButton}
+              variant="contained"
+            >
               Go To Classroom
             </Button>
           </Grid>

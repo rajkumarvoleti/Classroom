@@ -80,7 +80,11 @@ function signin({ providers }) {
               <Button
                 key={provider.name}
                 variant="contained"
-                onClick={() => signIn(provider.id)}
+                onClick={() =>
+                  signIn(provider.id, {
+                    callbackUrl: "/dashboard",
+                  })
+                }
                 id={provider.id}
               >
                 {Icons[provider.id]}
@@ -100,7 +104,6 @@ export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
   const providers = await getProviders();
-  console.log(providers);
 
   if (!providers) return;
 

@@ -23,6 +23,7 @@ export default function AppBarMenu1() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [top, setTop] = React.useState(true);
+  const { data: session } = useSession();
 
   function changeAppBarStyles() {
     if (window.pageYOffset === 0) setTop(true);
@@ -44,7 +45,7 @@ export default function AppBarMenu1() {
   };
 
   const handleCloseNavMenu = (setting) => {
-    if (setting === "Logout") signOut();
+    if (setting === "Logout") signOut({ callbackUrl: "/" });
     setAnchorElNav(null);
   };
 
@@ -65,8 +66,6 @@ export default function AppBarMenu1() {
       transition: "background-color 0.5s ease",
     },
   };
-
-  const { data: session } = useSession();
 
   return (
     <AppBar style={top ? styles.appbar1 : styles.appbar2} position="fixed">
