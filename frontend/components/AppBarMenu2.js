@@ -20,7 +20,7 @@ import { DarkmodeSwitch } from "./DarkmodeSwitch";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-export default function AppBarMenu2() {
+export default function AppBarMenu2({ setMode }) {
   const { palette } = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -49,6 +49,13 @@ export default function AppBarMenu2() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleTheme = (val) => {
+    const checked = val.target.checked;
+    console.log(checked);
+    if (checked) setMode("dark");
+    else setMode("light");
   };
 
   const styles = {
@@ -122,7 +129,7 @@ export default function AppBarMenu2() {
 
           <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
             <Box>
-              <DarkmodeSwitch />
+              <DarkmodeSwitch onChange={handleTheme} />
             </Box>
             <IconButton
               aria-label="add classroom"

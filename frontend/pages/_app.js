@@ -61,7 +61,7 @@ export default function MyApp(props) {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <GlobalStyles />
-            {!home && <AppBarMenu2 />}
+            {!home && <AppBarMenu2 setMode={setMode} />}
             <Component {...pageProps} />
           </ThemeProvider>
         </CacheProvider>
