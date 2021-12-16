@@ -1,9 +1,11 @@
-import { getSession } from "next-auth/react";
+import { Box } from "@mui/system";
+import ClassCard from "../components/ClassCard";
+import ClassRooms from "../components/ClassRooms";
 
 export default function DashboardPage() {
   return (
-    <div>
-      <p>Hello</p>
-    </div>
+    <Box sx={{ margin: "20px" }}>
+      <ClassRooms />
+    </Box>
   );
 }

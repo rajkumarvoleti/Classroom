@@ -51,6 +51,7 @@ export default function AppBarMenu2({ setMode }) {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
+    event.stopPropagation();
     setAnchorElUser(event.currentTarget);
   };
   const handleClassroomMenu = (event) => {
@@ -96,7 +97,7 @@ export default function AppBarMenu2({ setMode }) {
 
   return (
     <ElevationScroll>
-      <AppBar style={styles.appbar} position="fixed">
+      <AppBar style={styles.appbar} position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Box
