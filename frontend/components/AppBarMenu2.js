@@ -17,6 +17,8 @@ import logo from "../images/logoBg.png";
 import { useScrollTrigger } from "@mui/material";
 import { DarkmodeSwitch } from "./DarkmodeSwitch";
 import DrawerComp from "./DrawerComp";
+import JoinModal from "./JoinModal";
+import CreateModal from "./CreateModal";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -36,6 +38,7 @@ export default function AppBarMenu2({ setMode }) {
   const { palette } = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElClass, setAnchorElClass] = React.useState(null);
   const [user, setUser] = React.useState(null);
 
   React.useEffect(() => {
@@ -50,6 +53,9 @@ export default function AppBarMenu2({ setMode }) {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+  const handleClassroomMenu = (event) => {
+    setAnchorElClass(event.currentTarget);
+  };
 
   const handleCloseNavMenu = (setting) => {
     if (setting === "Logout")
@@ -63,10 +69,18 @@ export default function AppBarMenu2({ setMode }) {
     setAnchorElUser(null);
   };
 
+  const handleCloseClassroomMenu = () => {
+    setAnchorElClass(null);
+  };
+
   const handleTheme = (val) => {
     const checked = val.target.checked;
     if (checked) setMode("dark");
     else setMode("light");
+  };
+
+  const handleCreate = () => {
+    console.log("Create Class");
   };
 
   const styles = {
@@ -125,15 +139,43 @@ export default function AppBarMenu2({ setMode }) {
               <Box>
                 <DarkmodeSwitch onChange={handleTheme} />
               </Box>
-              <IconButton
-                aria-label="add classroom"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-                sx={{ mx: "10px" }}
+
+              <Tooltip title="Create or Join a class">
+                <IconButton
+                  aria-label="add classroom"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  sx={{ mx: "10px" }}
+                  onClick={handleClassroomMenu}
+                >
+                  <AddIcon sx={{ fontSize: "30px" }} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElClass}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElClass)}
+                onClose={handleCloseClassroomMenu}
               >
-                <AddIcon sx={{ fontSize: "30px" }} />
-              </IconButton>
+                <JoinModal
+                  handleCloseClassroomMenu={handleCloseClassroomMenu}
+                />
+                <CreateModal
+                  handleCloseClassroomMenu={handleCloseClassroomMenu}
+                />
+              </Menu>
+
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar

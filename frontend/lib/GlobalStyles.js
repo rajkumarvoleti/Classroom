@@ -35,6 +35,12 @@ const useStyles = makeStyles(() =>
         width: "100vw",
         height: "100vh",
       },
+      ".center": {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+      },
     },
   })
 );
