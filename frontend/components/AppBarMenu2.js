@@ -14,11 +14,23 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@emotion/react";
 import { getSession, signOut } from "next-auth/react";
 import logo from "../images/logoBg.png";
-import { Drawer, List, ListItem } from "@mui/material";
+import { useScrollTrigger } from "@mui/material";
 import { DarkmodeSwitch } from "./DarkmodeSwitch";
+import DrawerComp from "./DrawerComp";
 
-const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+function ElevationScroll(props) {
+  const { children } = props;
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
+
+  return React.cloneElement(children, {
+    elevation: trigger ? 4 : 0,
+  });
+}
 
 export default function AppBarMenu2({ setMode }) {
   const { palette } = useTheme();
@@ -53,7 +65,6 @@ export default function AppBarMenu2({ setMode }) {
 
   const handleTheme = (val) => {
     const checked = val.target.checked;
-    console.log(checked);
     if (checked) setMode("dark");
     else setMode("light");
   };
@@ -62,6 +73,7 @@ export default function AppBarMenu2({ setMode }) {
     appbar: {
       backgroundColor: palette.background.primary,
       color: palette.text.primary,
+      borderBottom: `1px solid ${palette.background.secondary}`,
       transition: "background-color 0.5s ease",
     },
   };
@@ -69,114 +81,97 @@ export default function AppBarMenu2({ setMode }) {
   if (!user) return <p></p>;
 
   return (
-    <AppBar style={styles.appbar} position="fixed">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-            }}
-          >
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Drawer
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              key="left"
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+    <ElevationScroll>
+      <AppBar style={styles.appbar} position="fixed">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Box
               sx={{
+                flexGrow: 1,
                 display: "flex",
               }}
             >
-              <List sx={{ width: "200px" }}>
-                {pages.map((page) => (
-                  <ListItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </ListItem>
-                ))}
-              </List>
-            </Drawer>
-          </Box>
-
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: "flex", flexGrow: 1 }}
-          >
-            <img
-              style={{ margin: "0 10px", width: "60px", height: "auto" }}
-              src={logo.src}
-              alt="logo"
-            />
-            Class Room
-          </Typography>
-
-          <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
-            <Box>
-              <DarkmodeSwitch onChange={handleTheme} />
-            </Box>
-            <IconButton
-              aria-label="add classroom"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              sx={{ mx: "10px" }}
-            >
-              <AddIcon sx={{ fontSize: "30px" }} />
-            </IconButton>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  sx={{ border: "1px solid darkblue" }}
-                  alt="Remy Sharp"
-                  src={user.image}
-                />
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              <DrawerComp
+                anchorElNav={anchorElNav}
+                handleCloseNavMenu={handleCloseNavMenu}
+              />
+            </Box>
+
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ mr: 2, display: "flex", flexGrow: 1 }}
             >
-              {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
-                  onClick={() => handleCloseNavMenu(setting)}
-                >
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+              <img
+                style={{ margin: "0 10px", width: "60px", height: "auto" }}
+                src={logo.src}
+                alt="logo"
+              />
+              Class Room
+            </Typography>
+
+            <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
+              <Box>
+                <DarkmodeSwitch onChange={handleTheme} />
+              </Box>
+              <IconButton
+                aria-label="add classroom"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+                sx={{ mx: "10px" }}
+              >
+                <AddIcon sx={{ fontSize: "30px" }} />
+              </IconButton>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    sx={{ border: "1px solid darkblue" }}
+                    alt="Remy Sharp"
+                    src={user.image}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleCloseNavMenu(setting)}
+                  >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </ElevationScroll>
   );
 }

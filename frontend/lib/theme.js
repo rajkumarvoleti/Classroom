@@ -12,7 +12,7 @@ const getDesignTokens = (mode) => ({
       ? {
           background: {
             primary: "#FEFEFF",
-            secondary: "#F9FBFD",
+            secondary: "#E0E1E1",
           },
           text: {
             primary: "#2A2250",
