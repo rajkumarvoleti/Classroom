@@ -80,10 +80,6 @@ export default function AppBarMenu2({ setMode }) {
     else setMode("light");
   };
 
-  const handleCreate = () => {
-    console.log("Create Class");
-  };
-
   const styles = {
     appbar: {
       backgroundColor: palette.background.primary,
@@ -169,12 +165,8 @@ export default function AppBarMenu2({ setMode }) {
                 open={Boolean(anchorElClass)}
                 onClose={handleCloseClassroomMenu}
               >
-                <JoinModal
-                  handleCloseClassroomMenu={handleCloseClassroomMenu}
-                />
-                <CreateModal
-                  handleCloseClassroomMenu={handleCloseClassroomMenu}
-                />
+                <JoinModal />
+                <CreateModal />
               </Menu>
 
               <Tooltip title="Open settings">

@@ -1,4 +1,10 @@
-const { Text, Checkbox, Password, Url } = require("@keystonejs/fields");
+const {
+  Text,
+  Checkbox,
+  Password,
+  Url,
+  Relationship,
+} = require("@keystonejs/fields");
 
 module.exports = {
   fields: {
@@ -9,8 +15,6 @@ module.exports = {
     },
     isAdmin: {
       type: Checkbox,
-      // Field-level access controls
-      // Here, we set more restrictive field access so a non-admin cannot make themselves admin.
       access: {
         update: true,
       },
@@ -20,6 +24,21 @@ module.exports = {
     },
     image: {
       type: Url,
+    },
+    studentClasses: {
+      type: Relationship,
+      many: true,
+      ref: "Class.students",
+    },
+    teacherClasses: {
+      type: Relationship,
+      many: true,
+      ref: "Class.teachers",
+    },
+    authorClasses: {
+      type: Relationship,
+      many: true,
+      ref: "Class.author",
     },
   },
   // List-level access controls

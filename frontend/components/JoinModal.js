@@ -25,13 +25,12 @@ const style = {
   },
 };
 
-export default function JoinModal({ handleCloseClassroomMenu }) {
+export default function JoinModal() {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
 
   const handleOpen = (e) => {
     e.stopPropagation();
-    handleCloseClassroomMenu();
     setOpen(true);
   };
   const handleClose = () => setOpen(false);

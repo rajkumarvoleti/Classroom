@@ -4,8 +4,13 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 import { MenuItem, TextField } from "@mui/material";
+import { useSession } from "next-auth/react";
+import { useMutation } from "@apollo/client";
+import { CREATE_CLASS_MUTATION } from "../graphql/ClassQueries";
+import AlertComp from "./AlertComp";
 
 const style = {
   position: "absolute",
@@ -33,41 +38,68 @@ const formStyle = {
   },
 };
 
-export default function CreateModal({ handleCloseClassroomMenu }) {
+const result = {
+  message: "It's woking",
+  title: "Success",
+  mode: "success",
+};
+
+export default function CreateModal() {
   const [open, setOpen] = useState(false);
+  const [snack, setSnack] = useState(false);
   const [error, setError] = useState(false);
+  const [btnLoad, setBtnLoad] = useState(false);
   const [values, setValues] = useState({
-    class: "",
+    name: "",
     section: "",
     subject: "",
   });
 
+  const { data: session } = useSession();
+  const [createClass, { data, error: classError, loading }] = useMutation(
+    CREATE_CLASS_MUTATION
+  );
+
   const handleOpen = (e) => {
     e.stopPropagation();
-    handleCloseClassroomMenu();
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
 
+  const closeSnack = () => setSnack(false);
+  const openSnack = () => setSnack(true);
+
   const handleInputChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    if (name === "class" && value !== "") setError(false);
+    const { name, value } = e.target;
+    if (name === "name" && value !== "") setError(false);
     values[name] = value;
-    console.log(values);
     setValues(values);
   };
 
-  const handleSubmit = () => {
-    if (values.class === "") {
+  const handleSubmit = async () => {
+    if (values.name === "") {
       setError(true);
       return;
     }
-    console.log("success", values);
+    const { id } = session.user;
+    setBtnLoad(true);
+    const res = await createClass({ variables: { ...values, userId: id } });
+    console.log(res.data);
+    setBtnLoad(false);
+    openSnack();
+    handleClose();
+    // open the classroom page
   };
 
   return (
     <Box>
+      <AlertComp
+        visible={snack}
+        closeAlert={closeSnack}
+        title={result.title}
+        message={result.message}
+        mode={result.mode}
+      />
       <MenuItem onClick={handleOpen}>
         <Typography>Create Class</Typography>
       </MenuItem>
@@ -88,7 +120,7 @@ export default function CreateModal({ handleCloseClassroomMenu }) {
             <Box className="center" sx={formStyle}>
               <TextField
                 onChange={handleInputChange}
-                name="class"
+                name="name"
                 size="small"
                 label="Class Name (required)"
                 required
@@ -111,9 +143,13 @@ export default function CreateModal({ handleCloseClassroomMenu }) {
               />
             </Box>
             <Box className="buttonGroup">
-              <Button onClick={handleSubmit} variant="contained">
+              <LoadingButton
+                loading={btnLoad}
+                onClick={handleSubmit}
+                variant="contained"
+              >
                 Submit
-              </Button>
+              </LoadingButton>
               <Button variant="outlined" onClick={handleClose}>
                 Cancel
               </Button>

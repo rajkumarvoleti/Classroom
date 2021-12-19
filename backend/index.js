@@ -6,6 +6,7 @@ const initialiseData = require("./initial-data");
 require("dotenv").config();
 const { MongooseAdapter: Adapter } = require("@keystonejs/adapter-mongoose");
 const User = require("./lists/User");
+const Class = require("./lists/Class");
 
 const PROJECT_NAME = "backend";
 console.log(process.env.MONGO_URI);
@@ -21,6 +22,7 @@ const keystone = new Keystone({
 
 //lists
 keystone.createList("User", User);
+keystone.createList("Class", Class);
 
 // Access control functions
 // const userIsAdmin = ({ authentication: { item: user } }) =>

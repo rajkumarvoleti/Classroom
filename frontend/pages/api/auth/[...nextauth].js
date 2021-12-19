@@ -26,4 +26,10 @@ export default NextAuth({
     signIn: "/signin",
     signOut: "/signout",
   },
+  callbacks: {
+    async session({ session, user }) {
+      session.user = user;
+      return session;
+    },
+  },
 });
