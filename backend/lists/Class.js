@@ -1,5 +1,5 @@
-const { v4: uuid } = require("uuid");
-const { Text, Relationship, DateTime } = require("@keystonejs/fields");
+const shortid = require("shortid");
+const { Text, Relationship } = require("@keystonejs/fields");
 
 module.exports = {
   fields: {
@@ -8,19 +8,27 @@ module.exports = {
     subject: { type: Text },
     author: {
       type: Relationship,
-      ref: "User.authorClasses",
+      ref: "User",
       many: false,
       required: true,
     },
     teachers: {
       type: Relationship,
-      ref: "User.teacherClasses",
+      ref: "User",
       many: true,
       required: true,
     },
-    students: { type: Relationship, ref: "User.studentClasses", many: true },
-    studentInviteCode: { type: Text, unique: true, defaultValue: uuid },
-    teacherInviteCode: { type: Text, unique: true, defaultValue: uuid },
+    students: { type: Relationship, ref: "User", many: true },
+    studentInviteCode: {
+      type: Text,
+      unique: true,
+      defaultValue: shortid.generate,
+    },
+    teacherInviteCode: {
+      type: Text,
+      unique: true,
+      defaultValue: shortid.generate,
+    },
   },
   // List-level access controls
   access: {

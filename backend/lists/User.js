@@ -1,10 +1,4 @@
-const {
-  Text,
-  Checkbox,
-  Password,
-  Url,
-  Relationship,
-} = require("@keystonejs/fields");
+const { Text, Checkbox, Password, Url } = require("@keystonejs/fields");
 
 module.exports = {
   fields: {
@@ -24,21 +18,6 @@ module.exports = {
     },
     image: {
       type: Url,
-    },
-    studentClasses: {
-      type: Relationship,
-      many: true,
-      ref: "Class.students",
-    },
-    teacherClasses: {
-      type: Relationship,
-      many: true,
-      ref: "Class.teachers",
-    },
-    authorClasses: {
-      type: Relationship,
-      many: true,
-      ref: "Class.author",
     },
   },
   // List-level access controls

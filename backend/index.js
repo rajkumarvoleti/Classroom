@@ -7,9 +7,9 @@ require("dotenv").config();
 const { MongooseAdapter: Adapter } = require("@keystonejs/adapter-mongoose");
 const User = require("./lists/User");
 const Class = require("./lists/Class");
+const JoinClass = require("./resolvers/JoinClass");
 
 const PROJECT_NAME = "backend";
-console.log(process.env.MONGO_URI);
 const adapterConfig = {
   mongoUri: process.env.MONGO_URI,
 };
@@ -21,8 +21,25 @@ const keystone = new Keystone({
 });
 
 //lists
-keystone.createList("User", User);
-keystone.createList("Class", Class);
+const userList = keystone.createList("User", User);
+const classList = keystone.createList("Class", Class);
+
+//extendedschemas
+keystone.extendGraphQLSchema({
+  types: [
+    {
+      type: "type JoinClassOutput { message: String! }",
+    },
+  ],
+  mutations: [
+    {
+      schema:
+        "joinClass(code: String!,userId: ID!,isTeacher: Boolean!): JoinClassOutput",
+      resolver: (parent, { code, userId, isTeacher }) =>
+        JoinClass(classList, { code, userId, isTeacher }),
+    },
+  ],
+});
 
 // Access control functions
 // const userIsAdmin = ({ authentication: { item: user } }) =>
