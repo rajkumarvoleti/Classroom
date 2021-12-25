@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { ButtonGroup, Input, MenuItem, TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
+import Switch from "@mui/material/Switch";
+import { useMutation } from "@apollo/client";
+import { JOIN_CLASS } from "../graphql/ClassQueries";
+import { useSession } from "next-auth/react";
+import AlertComp from "./AlertComp";
 
 const style = {
   position: "absolute",
@@ -16,18 +21,37 @@ const style = {
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
+  ".inputs": {
+    my: "30px",
+    ".toggle": {
+      flexDirection: "row",
+      mb: "10px",
+    },
+  },
   ".buttonGroup button": {
     mx: "10px",
   },
 };
 
+const result = {
+  title: "Success",
+  mode: "success",
+  message: "You have joined the class",
+};
+
 export default function JoinModal() {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
+  const [teacher, setTeacher] = useState(false);
+  const [snack, setSnack] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [joinClass, { data, error: classError, loading }] =
+    useMutation(JOIN_CLASS);
+  const { data: session, status } = useSession();
+
+  const closeSnack = () => setSnack(false);
+  const openSnack = () => setSnack(true);
 
   const handleOpen = (e) => {
     e.stopPropagation();
@@ -37,12 +61,44 @@ export default function JoinModal() {
 
   const handleCodeChange = (e) => setCode(e.target.value);
 
-  const handleSubmit = () => {
-    console.log(code);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { id } = session.user;
+    console.log({ code, id, teacher });
+    const res = await joinClass({
+      variables: {
+        code: code,
+        userId: id,
+        isTeacher: teacher,
+      },
+    });
+    const message = res.data.joinClass.message;
+    if (message === "success") {
+      setError(null);
+      handleClose();
+      openSnack();
+    } else setError(message);
   };
+
+  const handleSwitch = () => {
+    setTeacher(!teacher);
+  };
+
+  useEffect(() => {
+    setError(null);
+  }, []);
+
+  if (classError) return <p>Something went wrong {error}</p>;
 
   return (
     <Box>
+      <AlertComp
+        visible={snack}
+        closeAlert={closeSnack}
+        title={result.title}
+        message={result.message}
+        mode={result.mode}
+      />
       <MenuItem onClick={handleOpen}>
         <Typography>Join class</Typography>
       </MenuItem>
@@ -56,18 +112,31 @@ export default function JoinModal() {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={style} className="center">
             <Typography fontSize="20px" textAlign="center">
               Enter the Class Code
             </Typography>
-            <TextField
-              sx={{ my: "30px" }}
-              label="Class Code"
-              size="small"
-              onChange={handleCodeChange}
-            />
+
+            <Box className="inputs">
+              <Box className="toggle center">
+                <Typography>Join as a Teacher ?</Typography>
+                <Switch onChange={handleSwitch} />
+              </Box>
+              <TextField
+                error={error}
+                label="Class Code"
+                size="small"
+                onChange={handleCodeChange}
+                helperText={error ? error : ""}
+              />
+            </Box>
+
             <Box className="buttonGroup">
-              <Button onClick={handleSubmit} variant="contained">
+              <Button
+                onClick={handleSubmit}
+                variant="contained"
+                loading={loading}
+              >
                 Submit
               </Button>
               <Button variant="outlined" onClick={handleClose}>

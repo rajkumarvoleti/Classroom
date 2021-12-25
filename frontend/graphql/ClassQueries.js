@@ -23,3 +23,11 @@ export const CREATE_CLASS_MUTATION = gql`
     }
   }
 `;
+
+export const JOIN_CLASS = gql`
+  mutation JOIN_CLASS($code: String!, $userId: ID!, $isTeacher: Boolean!) {
+    joinClass(code: $code, userId: $userId, isTeacher: $isTeacher) {
+      message
+    }
+  }
+`;

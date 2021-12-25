@@ -39,7 +39,7 @@ const formStyle = {
 };
 
 const result = {
-  message: "It's woking",
+  message: "Classroom created",
   title: "Success",
   mode: "success",
 };
@@ -48,7 +48,6 @@ export default function CreateModal() {
   const [open, setOpen] = useState(false);
   const [snack, setSnack] = useState(false);
   const [error, setError] = useState(false);
-  const [btnLoad, setBtnLoad] = useState(false);
   const [values, setValues] = useState({
     name: "",
     section: "",
@@ -82,10 +81,7 @@ export default function CreateModal() {
       return;
     }
     const { id } = session.user;
-    setBtnLoad(true);
-    const res = await createClass({ variables: { ...values, userId: id } });
-    console.log(res.data);
-    setBtnLoad(false);
+    await createClass({ variables: { ...values, userId: id } });
     openSnack();
     handleClose();
     // open the classroom page
@@ -144,7 +140,7 @@ export default function CreateModal() {
             </Box>
             <Box className="buttonGroup">
               <LoadingButton
-                loading={btnLoad}
+                loading={loading}
                 onClick={handleSubmit}
                 variant="contained"
               >

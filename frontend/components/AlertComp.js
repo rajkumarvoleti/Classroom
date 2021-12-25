@@ -2,7 +2,7 @@ import { Alert, AlertTitle, Slide, Snackbar } from "@mui/material";
 import PropTypes from "prop-types";
 
 function Transition(props) {
-  return <Slide {...props} direction="right" />;
+  return <Slide timeout={2000} {...props} direction="right" />;
 }
 
 export default function AlertComp({
@@ -14,9 +14,10 @@ export default function AlertComp({
 }) {
   return (
     <Snackbar
+      autoHideDuration={2000}
       anchorOrigin={{ vertical: "top", horizontal: "left" }}
       open={visible}
-      autoHideDuration={2000}
+      onClose={closeAlert}
       TransitionComponent={Transition}
     >
       <Alert onClose={closeAlert} severity={mode} sx={{ width: "100%" }}>
