@@ -115,6 +115,7 @@ export default function AppBarMenu2({ setMode }) {
               <DrawerComp
                 anchorElNav={anchorElNav}
                 handleCloseNavMenu={handleCloseNavMenu}
+                userId={user.id}
               />
             </Box>
 

@@ -31,3 +31,49 @@ export const JOIN_CLASS = gql`
     }
   }
 `;
+
+export const GET_STUDENT_CLASSES = gql`
+  query GET_STUDENT_CLASSES($id: ID!) {
+    allClasses(where: { students_some: { id: $id } }) {
+      id
+    }
+  }
+`;
+
+export const GET_TEACHER_CLASSES = gql`
+  query GET_TEACHER_CLASSES($id: ID!) {
+    allClasses(where: { teachers_some: { id: $id } }) {
+      id
+    }
+  }
+`;
+
+export const GET_STUDENT_CLASSNAMES = gql`
+  query GET_STUDENT_CLASSES($id: ID!) {
+    allClasses(where: { students_some: { id: $id } }) {
+      name
+    }
+  }
+`;
+
+export const GET_TEACHER_CLASSNAMES = gql`
+  query GET_TEACHER_CLASSES($id: ID!) {
+    allClasses(where: { teachers_some: { id: $id } }) {
+      name
+    }
+  }
+`;
+
+export const GET_CLASS_CARD_DATA = gql`
+  query GET_CLASS_CARD_DATA($id: ID!) {
+    Class(where: { id: $id }) {
+      name
+      section
+      subject
+      author {
+        name
+        image
+      }
+    }
+  }
+`;

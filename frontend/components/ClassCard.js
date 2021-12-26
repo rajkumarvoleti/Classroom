@@ -9,7 +9,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {
   Avatar,
-  Button,
   CardActionArea,
   CardActions,
   Divider,
@@ -18,11 +17,16 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
 import { Box } from "@mui/system";
+import { useQuery } from "@apollo/client";
+import { GET_CLASS_CARD_DATA } from "../graphql/ClassQueries";
 
 const styles = {
   card: {
     position: "relative",
     width: "280px",
+    ".content": {
+      height: "180px",
+    },
   },
   avatar: {
     position: "absolute",
@@ -45,7 +49,11 @@ const styles = {
 
 const options = ["Enroll", "Leave"];
 
-export default function ClassCard() {
+export default function ClassCard({ id }) {
+  const { data, error, loading } = useQuery(GET_CLASS_CARD_DATA, {
+    variables: { id },
+  });
+
   const [anchorElMore, setAnchorElMore] = useState(null);
 
   const handleOpenMore = (event) => {
@@ -58,6 +66,13 @@ export default function ClassCard() {
     console.log("You clicked me");
   };
 
+  if (loading) return <p>loading</p>;
+  if (error) {
+    console.log(error);
+    return <p>Something went wrong</p>;
+  }
+  const { Class } = data;
+
   return (
     <Card sx={styles.card} className="elevate">
       <CardActionArea onClick={changePage}>
@@ -68,11 +83,12 @@ export default function ClassCard() {
           alt="green iguana"
         />
       </CardActionArea>
-      <CardContent>
+      <CardContent className="content">
         <Avatar
           sx={styles.avatar}
           alt="Remy Sharp"
-          src="https://picsum.photos/200"
+          // src="https://picsum.photos/200"
+          src={Class.author?.image}
         />
 
         <Box>
@@ -102,13 +118,20 @@ export default function ClassCard() {
           </Menu>
         </Box>
 
-        <Typography gutterBottom variant="h5" component="div">
-          Lizard
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
-        </Typography>
+        <Box>
+          <Typography gutterBottom variant="h5" component="div">
+            {Class.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {Class.subject}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {Class.section}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {Class.author.name}
+          </Typography>
+        </Box>
       </CardContent>
       <Divider />
       <CardActions sx={styles.action}>

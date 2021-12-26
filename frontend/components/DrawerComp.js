@@ -10,8 +10,52 @@ import {
   Divider,
 } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import { useQuery } from "@apollo/client";
 
-export default function DrawerComp({ anchorElNav, handleCloseNavMenu }) {
+import {
+  GET_STUDENT_CLASSNAMES,
+  GET_TEACHER_CLASSNAMES,
+} from "../graphql/ClassQueries";
+
+const ListItemComp = ({ _class }) => {
+  return (
+    <ListItem>
+      <ListItemButton component="a" href={`/class/${_class.id}`}>
+        <ListItemText primary={_class.name} />
+      </ListItemButton>
+    </ListItem>
+  );
+};
+
+export default function DrawerComp({
+  anchorElNav,
+  handleCloseNavMenu,
+  userId,
+}) {
+  const {
+    data: studentData,
+    loading: studentLoading,
+    error: studentError,
+  } = useQuery(GET_STUDENT_CLASSNAMES, {
+    variables: { id: userId },
+  });
+
+  const {
+    data: teacherData,
+    loading: teacherLoading,
+    error: teacherError,
+  } = useQuery(GET_TEACHER_CLASSNAMES, {
+    variables: { id: userId },
+  });
+
+  if (studentLoading || teacherLoading) return <p>loading</p>;
+  if (studentError || teacherError) {
+    console.log({ studentError, teacherError });
+    return <p>Something went wrong</p>;
+  }
+
+  console.log({ studentData, teacherData });
+
   return (
     <Drawer
       id="menu-appbar"
@@ -46,16 +90,10 @@ export default function DrawerComp({ anchorElNav, handleCloseNavMenu }) {
         <nav aria-label="secondary mailbox folders">
           <List>
             <ListSubheader>Teaching</ListSubheader>
-            <ListItem>
-              <ListItemButton>
-                <ListItemText primary="Trash" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Spam" />
-              </ListItemButton>
-            </ListItem>
+            {!teacherData.allClasses[0] && <p>No classes to show</p>}
+            {teacherData.allClasses.map((_class) => (
+              <ListItemComp key={_class.id} _class={_class} />
+            ))}
           </List>
         </nav>
         <Divider />
@@ -63,16 +101,10 @@ export default function DrawerComp({ anchorElNav, handleCloseNavMenu }) {
         <nav aria-label="secondary mailbox folders">
           <List>
             <ListSubheader>Enrolled</ListSubheader>
-            <ListItem>
-              <ListItemButton>
-                <ListItemText primary="Trash" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Spam" />
-              </ListItemButton>
-            </ListItem>
+            {!studentData.allClasses[0] && <p>No classes to show</p>}
+            {studentData.allClasses.map((_class) => (
+              <ListItemComp key={_class.id} _class={_class} />
+            ))}
           </List>
         </nav>
         <Divider />
