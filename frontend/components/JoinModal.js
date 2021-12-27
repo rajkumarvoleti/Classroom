@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
+
 import Typography from "@mui/material/Typography";
 import { MenuItem, TextField } from "@mui/material";
 import Switch from "@mui/material/Switch";
@@ -132,13 +134,13 @@ export default function JoinModal() {
             </Box>
 
             <Box className="buttonGroup">
-              <Button
+              <LoadingButton
                 onClick={handleSubmit}
                 variant="contained"
-                loading={loading}
+                loading={true}
               >
                 Submit
-              </Button>
+              </LoadingButton>
               <Button variant="outlined" onClick={handleClose}>
                 Cancel
               </Button>

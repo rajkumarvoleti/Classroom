@@ -12,7 +12,9 @@ import {
   CardActionArea,
   CardActions,
   Divider,
+  Fade,
   IconButton,
+  LinearProgress,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
@@ -66,7 +68,14 @@ export default function ClassCard({ id }) {
     console.log("You clicked me");
   };
 
-  if (loading) return <p>loading</p>;
+  if (loading) {
+    return (
+      <Box sx={styles.card}>
+        <LinearProgress />
+      </Box>
+    );
+  }
+
   if (error) {
     console.log(error);
     return <p>Something went wrong</p>;
@@ -74,74 +83,76 @@ export default function ClassCard({ id }) {
   const { Class } = data;
 
   return (
-    <Card sx={styles.card} className="elevate">
-      <CardActionArea onClick={changePage}>
-        <CardMedia
-          component="img"
-          height="140"
-          image="https://picsum.photos/200/300"
-          alt="green iguana"
-        />
-      </CardActionArea>
-      <CardContent className="content">
-        <Avatar
-          sx={styles.avatar}
-          alt="Remy Sharp"
-          // src="https://picsum.photos/200"
-          src={Class.author?.image}
-        />
+    <Fade in={!loading} timeout={{ enter: 500, exit: 500 }}>
+      <Card sx={styles.card} className="elevate">
+        <CardActionArea onClick={changePage}>
+          <CardMedia
+            component="img"
+            height="140"
+            image="https://picsum.photos/200/300"
+            alt="green iguana"
+          />
+        </CardActionArea>
+        <CardContent className="content">
+          <Avatar
+            sx={styles.avatar}
+            alt="Remy Sharp"
+            // src="https://picsum.photos/200"
+            src={Class.author?.image}
+          />
 
-        <Box>
-          <IconButton onClick={handleOpenMore} sx={styles.more}>
-            <MoreVertIcon />
+          <Box>
+            <IconButton onClick={handleOpenMore} sx={styles.more}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              sx={{ mt: "45px" }}
+              anchorEl={anchorElMore}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElMore)}
+              onClose={handleCloseMore}
+            >
+              {options.map((option) => (
+                <MenuItem key={option} onClick={handleCloseMore}>
+                  <Typography textAlign="center">{option}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+
+          <Box>
+            <Typography gutterBottom variant="h5" component="div">
+              {Class.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {Class.subject}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {Class.section}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {Class.author.name}
+            </Typography>
+          </Box>
+        </CardContent>
+        <Divider />
+        <CardActions sx={styles.action}>
+          <IconButton>
+            <MovingIcon />
           </IconButton>
-          <Menu
-            sx={{ mt: "45px" }}
-            anchorEl={anchorElMore}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            open={Boolean(anchorElMore)}
-            onClose={handleCloseMore}
-          >
-            {options.map((option) => (
-              <MenuItem key={option} onClick={handleCloseMore}>
-                <Typography textAlign="center">{option}</Typography>
-              </MenuItem>
-            ))}
-          </Menu>
-        </Box>
-
-        <Box>
-          <Typography gutterBottom variant="h5" component="div">
-            {Class.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {Class.subject}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {Class.section}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {Class.author.name}
-          </Typography>
-        </Box>
-      </CardContent>
-      <Divider />
-      <CardActions sx={styles.action}>
-        <IconButton>
-          <MovingIcon />
-        </IconButton>
-        <IconButton>
-          <AssignmentIndOutlinedIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
+          <IconButton>
+            <AssignmentIndOutlinedIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
+    </Fade>
   );
 }

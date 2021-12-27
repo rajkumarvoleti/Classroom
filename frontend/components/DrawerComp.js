@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { useQuery } from "@apollo/client";
-
+import CircularProgressComp from "../components/CircularProgressComp";
 import {
   GET_STUDENT_CLASSNAMES,
   GET_TEACHER_CLASSNAMES,
@@ -48,7 +48,8 @@ export default function DrawerComp({
     variables: { id: userId },
   });
 
-  if (studentLoading || teacherLoading) return <p>loading</p>;
+  if (studentLoading || teacherLoading)
+    return <CircularProgressComp height={"auto"} />;
   if (studentError || teacherError) {
     console.log({ studentError, teacherError });
     return <p>Something went wrong</p>;

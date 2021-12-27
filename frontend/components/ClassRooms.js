@@ -4,6 +4,7 @@ import {
   GET_STUDENT_CLASSES,
   GET_TEACHER_CLASSES,
 } from "../graphql/ClassQueries";
+import CircularProgressComp from "./CircularProgressComp";
 import ClassCard from "./ClassCard";
 
 const classes = ["", "", "", "", ""];
@@ -24,7 +25,8 @@ export default function ClassRooms({ type, userId }) {
     variables: { id: userId },
   });
 
-  if (studentLoading || teacherLoading) return <p>loading</p>;
+  if (studentLoading || teacherLoading)
+    return <CircularProgressComp height={"80vh"} />;
   if (studentError || teacherError) {
     console.log({ studentError, teacherError });
     return <p>Something went wrong</p>;
