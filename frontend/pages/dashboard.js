@@ -4,13 +4,48 @@ import { useSession } from "next-auth/react";
 import CircularProgressComp from "../components/CircularProgressComp";
 import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
+import {
+  GET_STUDENT_CLASSES,
+  GET_TEACHER_CLASSES,
+} from "../graphql/ClassQueries";
+import { useQuery } from "@apollo/client";
 
 function TabPanel({ value, index, userId, type }) {
+  const {
+    data: studentData,
+    loading: studentLoading,
+    error: studentError,
+  } = useQuery(GET_STUDENT_CLASSES, {
+    variables: { id: userId },
+  });
+  const {
+    data: teacherData,
+    loading: teacherLoading,
+    error: teacherError,
+  } = useQuery(GET_TEACHER_CLASSES, {
+    variables: { id: userId },
+  });
+
+  if (studentLoading || teacherLoading)
+    return <CircularProgressComp height={"80vh"} />;
+  if (studentError || teacherError) {
+    console.log({ studentError, teacherError });
+    return <p>Something went wrong</p>;
+  }
+
+  const studentClasses = studentData.allClasses;
+  const teacherClasses = teacherData.allClasses;
+  const allClasses = [...studentClasses, ...teacherClasses];
+
+  let classes = allClasses;
+  if (type === "student") classes = studentClasses;
+  else if (type === "teacher") classes = teacherClasses;
+
   return (
     <div role="tabpanel" hidden={value !== index}>
       {value === index && (
         <Box sx={{ margin: "30px 10px" }}>
-          <ClassRooms userId={userId} type={type} />
+          <ClassRooms classes={classes} />
         </Box>
       )}
     </div>

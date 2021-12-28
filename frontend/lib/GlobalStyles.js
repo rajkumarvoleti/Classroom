@@ -41,6 +41,12 @@ const useStyles = makeStyles(() =>
         justifyContent: "center",
         flexDirection: "column",
       },
+      ".centerR": {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
+      },
       ".elevate": {
         "&:hover": {
           boxShadow:

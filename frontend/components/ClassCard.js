@@ -9,8 +9,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {
   Avatar,
+  Button,
   CardActionArea,
   CardActions,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
   Fade,
   IconButton,
@@ -19,8 +24,9 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
 import { Box } from "@mui/system";
-import { useQuery } from "@apollo/client";
-import { GET_CLASS_CARD_DATA } from "../graphql/ClassQueries";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_CLASS_CARD_DATA, UNENROLL_CLASS } from "../graphql/ClassQueries";
+import { useSession } from "next-auth/react";
 
 const styles = {
   card: {
@@ -49,26 +55,81 @@ const styles = {
   },
 };
 
-const options = ["Enroll", "Leave"];
+const options = ["Unenroll"];
+
+function Confirm({ open, setOpen, handleUnenroll }) {
+  const handleClose = () => setOpen(false);
+
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogContent sx={{ mt: "10px" }}>
+        Unenroll from the class?
+      </DialogContent>
+
+      <DialogActions className="centerR" sx={{ mb: "15px" }}>
+        <Button
+          sx={{ textTransform: "none" }}
+          variant="outlined"
+          onClick={handleClose}
+        >
+          Cancel
+        </Button>
+        <Button
+          sx={{ textTransform: "none" }}
+          variant="contained"
+          color="error"
+          onClick={handleUnenroll}
+        >
+          Unenroll
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 
 export default function ClassCard({ id }) {
   const { data, error, loading } = useQuery(GET_CLASS_CARD_DATA, {
     variables: { id },
   });
+  const [
+    unEnroll,
+    { data: unEnrollData, error: unEnrollError, loading: unEnrollLoading },
+  ] = useMutation(UNENROLL_CLASS);
+  const { data: session, status } = useSession();
 
   const [anchorElMore, setAnchorElMore] = useState(null);
+  const [hidden, setHidden] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleOpenMore = (event) => {
     event.stopPropagation();
     setAnchorElMore(event.currentTarget);
   };
-  const handleCloseMore = () => setAnchorElMore(null);
+
+  const handleUnenroll = async () => {
+    await unEnroll({
+      variables: {
+        classId: id,
+        userId: session.user.id,
+      },
+    });
+    window.location.reload();
+    setOpen(false);
+    setAnchorElMore(null);
+    setHidden(true);
+  };
+
+  const handleCloseMore = async (option) => {
+    console.log(option);
+    if (option === "Unenroll") setOpen(true);
+    else setAnchorElMore(null);
+  };
 
   const changePage = () => {
     console.log("You clicked me");
   };
 
-  if (loading) {
+  if (loading || unEnrollLoading || status === "loading") {
     return (
       <Box sx={styles.card}>
         <LinearProgress />
@@ -76,15 +137,15 @@ export default function ClassCard({ id }) {
     );
   }
 
-  if (error) {
-    console.log(error);
+  if (error || unEnrollError) {
+    console.log(error, unEnrollError);
     return <p>Something went wrong</p>;
   }
   const { Class } = data;
 
   return (
     <Fade in={!loading} timeout={{ enter: 500, exit: 500 }}>
-      <Card sx={styles.card} className="elevate">
+      <Card hidden={hidden} sx={styles.card} className="elevate">
         <CardActionArea onClick={changePage}>
           <CardMedia
             component="img"
@@ -120,8 +181,13 @@ export default function ClassCard({ id }) {
               open={Boolean(anchorElMore)}
               onClose={handleCloseMore}
             >
+              <Confirm
+                open={open}
+                setOpen={setOpen}
+                handleUnenroll={handleUnenroll}
+              />
               {options.map((option) => (
-                <MenuItem key={option} onClick={handleCloseMore}>
+                <MenuItem key={option} onClick={() => handleCloseMore(option)}>
                   <Typography textAlign="center">{option}</Typography>
                 </MenuItem>
               ))}
