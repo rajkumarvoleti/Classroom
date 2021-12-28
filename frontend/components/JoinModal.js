@@ -41,7 +41,7 @@ const result = {
   message: "You have joined the class",
 };
 
-export default function JoinModal() {
+export default function JoinModal({ simple }) {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
   const [teacher, setTeacher] = useState(false);
@@ -101,9 +101,12 @@ export default function JoinModal() {
         message={result.message}
         mode={result.mode}
       />
-      <MenuItem onClick={handleOpen}>
-        <Typography>Join class</Typography>
-      </MenuItem>
+      {!simple && (
+        <MenuItem onClick={handleOpen}>
+          <Typography>Join class</Typography>
+        </MenuItem>
+      )}
+      {simple && <Typography onClick={handleOpen}>Join class</Typography>}
       <Modal
         open={open}
         onClose={handleClose}
@@ -137,7 +140,7 @@ export default function JoinModal() {
               <LoadingButton
                 onClick={handleSubmit}
                 variant="contained"
-                loading={true}
+                loading={loading}
               >
                 Submit
               </LoadingButton>

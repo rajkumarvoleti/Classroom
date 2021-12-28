@@ -44,7 +44,7 @@ const result = {
   mode: "success",
 };
 
-export default function CreateModal() {
+export default function CreateModal({ simple }) {
   const [open, setOpen] = useState(false);
   const [snack, setSnack] = useState(false);
   const [error, setError] = useState(false);
@@ -96,9 +96,12 @@ export default function CreateModal() {
         message={result.message}
         mode={result.mode}
       />
-      <MenuItem onClick={handleOpen}>
-        <Typography>Create Class</Typography>
-      </MenuItem>
+      {!simple && (
+        <MenuItem onClick={handleOpen}>
+          <Typography>Create Class</Typography>
+        </MenuItem>
+      )}
+      {simple && <Typography onClick={handleOpen}>Create Class</Typography>}
       <Modal
         open={open}
         onClose={handleClose}

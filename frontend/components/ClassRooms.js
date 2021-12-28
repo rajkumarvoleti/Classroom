@@ -6,6 +6,7 @@ import {
 } from "../graphql/ClassQueries";
 import CircularProgressComp from "./CircularProgressComp";
 import ClassCard from "./ClassCard";
+import NoClasses from "./NoClasses";
 
 const classes = ["", "", "", "", ""];
 
@@ -39,6 +40,8 @@ export default function ClassRooms({ type, userId }) {
   let classes = allClasses;
   if (type === "student") classes = studentClasses;
   else if (type === "teacher") classes = teacherClasses;
+
+  if (!classes[0]) return <NoClasses />;
 
   return (
     <Grid container spacing="30px">
