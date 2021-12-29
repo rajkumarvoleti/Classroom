@@ -13,6 +13,7 @@ import { useMutation } from "@apollo/client";
 import { JOIN_CLASS } from "../graphql/ClassQueries";
 import { useSession } from "next-auth/react";
 import AlertComp from "./AlertComp";
+import { useEmitter } from "react-custom-events-hooks";
 
 const style = {
   position: "absolute",
@@ -62,6 +63,7 @@ export default function JoinModal({ simple }) {
   const handleClose = () => setOpen(false);
 
   const handleCodeChange = (e) => setCode(e.target.value);
+  const refetchClasses = useEmitter("refetchClasses");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,6 +79,7 @@ export default function JoinModal({ simple }) {
     const message = res.data.joinClass.message;
     if (message === "success") {
       setError(null);
+      refetchClasses();
       handleClose();
       openSnack();
     } else setError(message);

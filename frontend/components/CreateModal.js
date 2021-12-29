@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
 import { CREATE_CLASS_MUTATION } from "../graphql/ClassQueries";
 import AlertComp from "./AlertComp";
+import { useEmitter } from "react-custom-events-hooks";
 
 const style = {
   position: "absolute",
@@ -59,6 +60,8 @@ export default function CreateModal({ simple }) {
     CREATE_CLASS_MUTATION
   );
 
+  const refetchClasses = useEmitter("refetchClasses");
+
   const handleOpen = (e) => {
     e.stopPropagation();
     setOpen(true);
@@ -82,6 +85,7 @@ export default function CreateModal({ simple }) {
     }
     const { id } = session.user;
     await createClass({ variables: { ...values, userId: id } });
+    refetchClasses();
     openSnack();
     handleClose();
     // open the classroom page

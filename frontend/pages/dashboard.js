@@ -9,12 +9,18 @@ import {
   GET_TEACHER_CLASSES,
 } from "../graphql/ClassQueries";
 import { useQuery } from "@apollo/client";
+import {
+  useCustomEvent,
+  useEmitter,
+  useListener,
+} from "react-custom-events-hooks";
 
 function TabPanel({ value, index, userId, type }) {
   const {
     data: studentData,
     loading: studentLoading,
     error: studentError,
+    refetch: studentRefetch,
   } = useQuery(GET_STUDENT_CLASSES, {
     variables: { id: userId },
   });
@@ -22,8 +28,14 @@ function TabPanel({ value, index, userId, type }) {
     data: teacherData,
     loading: teacherLoading,
     error: teacherError,
+    refetch: teacherRefetch,
   } = useQuery(GET_TEACHER_CLASSES, {
     variables: { id: userId },
+  });
+
+  useListener("refetchClasses", () => {
+    studentRefetch();
+    teacherRefetch();
   });
 
   if (studentLoading || teacherLoading)

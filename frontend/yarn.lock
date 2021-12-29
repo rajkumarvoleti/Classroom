@@ -3576,6 +3576,11 @@
     "iconv-lite" "0.4.24"
     "unpipe" "1.0.0"
 
+"react-custom-events-hooks@^0.0.0":
+  "integrity" "sha512-Z8L+eOU2d8nlH2OMT0rmdgNtEzSkHF3h97Rr+PJkaaHvCEvxcZhm06vjmqR9HUH8twi2bAR2FIwerVFdCZUkmg=="
+  "resolved" "https://registry.npmjs.org/react-custom-events-hooks/-/react-custom-events-hooks-0.0.0.tgz"
+  "version" "0.0.0"
+
 "react-dom@^16.8.0 || ^17.0.0", "react-dom@^17.0.2", "react-dom@>=16.6.0", "react-dom@17.0.2":
   "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"

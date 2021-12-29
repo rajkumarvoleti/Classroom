@@ -27,6 +27,7 @@ import { Box } from "@mui/system";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_CLASS_CARD_DATA, UNENROLL_CLASS } from "../graphql/ClassQueries";
 import { useSession } from "next-auth/react";
+import { useEmitter } from "react-custom-events-hooks";
 
 const styles = {
   card: {
@@ -101,6 +102,8 @@ export default function ClassCard({ id }) {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const refetchClasses = useEmitter("refetchClasses");
+
   const handleOpenMore = (event) => {
     event.stopPropagation();
     setAnchorElMore(event.currentTarget);
@@ -113,7 +116,7 @@ export default function ClassCard({ id }) {
         userId: session.user.id,
       },
     });
-    window.location.reload();
+    refetchClasses();
     setOpen(false);
     setAnchorElMore(null);
     setHidden(true);
