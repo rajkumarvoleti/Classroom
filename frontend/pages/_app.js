@@ -12,6 +12,8 @@ import GlobalStyles from "../lib/GlobalStyles";
 import Loading from "../components/Loading";
 import { useRouter } from "next/router";
 import AppBarMenu2 from "../components/AppBarMenu2";
+import { AlertStateProvider } from "../lib/AlertContext";
+import AlertComp from "../components/AlertComp";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -59,10 +61,13 @@ export default function MyApp(props) {
       <SessionProvider session={pageProps?.session}>
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <GlobalStyles />
-            {!home && <AppBarMenu2 setMode={setMode} />}
-            <Component {...pageProps} />
+            <AlertStateProvider>
+              <CssBaseline />
+              <GlobalStyles />
+              {!home && <AppBarMenu2 setMode={setMode} />}
+              <AlertComp />
+              <Component {...pageProps} />
+            </AlertStateProvider>
           </ThemeProvider>
         </CacheProvider>
       </SessionProvider>

@@ -79,13 +79,9 @@ export const GET_CLASS_CARD_DATA = gql`
 `;
 
 export const UNENROLL_CLASS = gql`
-
-mutation UNENROLL_CLASS($userId: ID!,$classId: ID!){
-  unEnroll(
-    userId: $userId
-    classId: $classId
-  ) {
-    result
+  mutation UNENROLL_CLASS($userId: ID!, $classId: ID!) {
+    unEnroll(userId: $userId, classId: $classId) {
+      message
+    }
   }
-}
 `;

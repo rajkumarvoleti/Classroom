@@ -12,6 +12,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_CLASS_MUTATION } from "../graphql/ClassQueries";
 import AlertComp from "./AlertComp";
 import { useEmitter } from "react-custom-events-hooks";
+import { useAlert } from "../lib/AlertContext";
 
 const style = {
   position: "absolute",
@@ -39,7 +40,7 @@ const formStyle = {
   },
 };
 
-const result = {
+const success = {
   message: "Classroom created",
   title: "Success",
   mode: "success",
@@ -47,7 +48,6 @@ const result = {
 
 export default function CreateModal({ simple }) {
   const [open, setOpen] = useState(false);
-  const [snack, setSnack] = useState(false);
   const [error, setError] = useState(false);
   const [values, setValues] = useState({
     name: "",
@@ -59,6 +59,7 @@ export default function CreateModal({ simple }) {
   const [createClass, { data, error: classError, loading }] = useMutation(
     CREATE_CLASS_MUTATION
   );
+  const { openAlert } = useAlert();
 
   const refetchClasses = useEmitter("refetchClasses");
 
@@ -67,9 +68,6 @@ export default function CreateModal({ simple }) {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-
-  const closeSnack = () => setSnack(false);
-  const openSnack = () => setSnack(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -85,21 +83,14 @@ export default function CreateModal({ simple }) {
     }
     const { id } = session.user;
     await createClass({ variables: { ...values, userId: id } });
+    openAlert(success);
     refetchClasses();
-    openSnack();
     handleClose();
     // open the classroom page
   };
 
   return (
     <Box>
-      <AlertComp
-        visible={snack}
-        closeAlert={closeSnack}
-        title={result.title}
-        message={result.message}
-        mode={result.mode}
-      />
       {!simple && (
         <MenuItem onClick={handleOpen}>
           <Typography>Create Class</Typography>

@@ -55,8 +55,6 @@ export default function DrawerComp({
     return <p>Something went wrong</p>;
   }
 
-  console.log({ studentData, teacherData });
-
   return (
     <Drawer
       id="menu-appbar"

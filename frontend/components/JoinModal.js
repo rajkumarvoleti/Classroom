@@ -14,6 +14,7 @@ import { JOIN_CLASS } from "../graphql/ClassQueries";
 import { useSession } from "next-auth/react";
 import AlertComp from "./AlertComp";
 import { useEmitter } from "react-custom-events-hooks";
+import { useAlert } from "../lib/AlertContext";
 
 const style = {
   position: "absolute",
@@ -46,15 +47,12 @@ export default function JoinModal({ simple }) {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
   const [teacher, setTeacher] = useState(false);
-  const [snack, setSnack] = useState(false);
   const [error, setError] = useState(null);
 
   const [joinClass, { data, error: classError, loading }] =
     useMutation(JOIN_CLASS);
   const { data: session, status } = useSession();
-
-  const closeSnack = () => setSnack(false);
-  const openSnack = () => setSnack(true);
+  const { openAlert } = useAlert();
 
   const handleOpen = (e) => {
     e.stopPropagation();
@@ -80,8 +78,8 @@ export default function JoinModal({ simple }) {
     if (message === "success") {
       setError(null);
       refetchClasses();
+      openAlert(result);
       handleClose();
-      openSnack();
     } else setError(message);
   };
 
@@ -97,13 +95,6 @@ export default function JoinModal({ simple }) {
 
   return (
     <Box>
-      <AlertComp
-        visible={snack}
-        closeAlert={closeSnack}
-        title={result.title}
-        message={result.message}
-        mode={result.mode}
-      />
       {!simple && (
         <MenuItem onClick={handleOpen}>
           <Typography>Join class</Typography>

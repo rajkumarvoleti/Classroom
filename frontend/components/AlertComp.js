@@ -1,17 +1,15 @@
 import { Alert, AlertTitle, Slide, Snackbar } from "@mui/material";
 import PropTypes from "prop-types";
+import { useAlert } from "../lib/AlertContext";
 
 function Transition(props) {
   return <Slide timeout={2000} {...props} direction="right" />;
 }
 
-export default function AlertComp({
-  visible,
-  closeAlert,
-  title,
-  message,
-  mode,
-}) {
+export default function AlertComp() {
+  const { visible, closeAlert, options } = useAlert();
+  const { title, message, mode } = options;
+
   return (
     <Snackbar
       autoHideDuration={2000}

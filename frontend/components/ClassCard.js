@@ -28,6 +28,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_CLASS_CARD_DATA, UNENROLL_CLASS } from "../graphql/ClassQueries";
 import { useSession } from "next-auth/react";
 import { useEmitter } from "react-custom-events-hooks";
+import { useAlert } from "../lib/AlertContext";
 
 const styles = {
   card: {
@@ -57,6 +58,12 @@ const styles = {
 };
 
 const options = ["Unenroll"];
+
+const success = {
+  title: "Success",
+  messsage: "Unenrolled from the class",
+  mode: "success",
+};
 
 function Confirm({ open, setOpen, handleUnenroll }) {
   const handleClose = () => setOpen(false);
@@ -97,6 +104,7 @@ export default function ClassCard({ id }) {
     { data: unEnrollData, error: unEnrollError, loading: unEnrollLoading },
   ] = useMutation(UNENROLL_CLASS);
   const { data: session, status } = useSession();
+  const { openAlert } = useAlert();
 
   const [anchorElMore, setAnchorElMore] = useState(null);
   const [hidden, setHidden] = useState(false);
@@ -110,12 +118,14 @@ export default function ClassCard({ id }) {
   };
 
   const handleUnenroll = async () => {
+    console.log(id, session.user.id);
     await unEnroll({
       variables: {
         classId: id,
         userId: session.user.id,
       },
-    });
+    }).catch((err) => console.log(err.message));
+    openAlert(success);
     refetchClasses();
     setOpen(false);
     setAnchorElMore(null);
@@ -123,7 +133,6 @@ export default function ClassCard({ id }) {
   };
 
   const handleCloseMore = async (option) => {
-    console.log(option);
     if (option === "Unenroll") setOpen(true);
     else setAnchorElMore(null);
   };
