@@ -78,7 +78,7 @@ export default function DrawerComp({
             <ListItem>
               <ListItemButton component="a" href="/">
                 <ListItemIcon>
-                  <GridViewIcon />
+                  <HomeOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItemButton>
@@ -86,7 +86,7 @@ export default function DrawerComp({
             <ListItem>
               <ListItemButton component="a" href="/dashboard">
                 <ListItemIcon>
-                  <HomeOutlinedIcon />
+                  <GridViewIcon />
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" />
               </ListItemButton>
@@ -95,10 +95,12 @@ export default function DrawerComp({
         </nav>
         <Divider />
 
-        <nav aria-label="secondary mailbox folders">
+        <nav>
           <List>
             <ListSubheader>Teaching</ListSubheader>
-            {!teacherData.allClasses[0] && <p>No classes to show</p>}
+            {!teacherData.allClasses[0] && (
+              <ListItem>No classes to show</ListItem>
+            )}
             {teacherData.allClasses.map((_class) => (
               <ListItemComp key={_class.id} _class={_class} />
             ))}
@@ -106,10 +108,12 @@ export default function DrawerComp({
         </nav>
         <Divider />
 
-        <nav aria-label="secondary mailbox folders">
+        <nav>
           <List>
             <ListSubheader>Enrolled</ListSubheader>
-            {!studentData.allClasses[0] && <p>No classes to show</p>}
+            {!studentData.allClasses[0] && (
+              <ListItem>No classes to show</ListItem>
+            )}
             {studentData.allClasses.map((_class) => (
               <ListItemComp key={_class.id} _class={_class} />
             ))}

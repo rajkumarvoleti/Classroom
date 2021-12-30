@@ -46,7 +46,7 @@ export default function ClassroomPage() {
         </Tabs>
       </Box>
       <div role="tabpanel" hidden={value !== 0}>
-        <Stream Class={data.Class} />
+        <Stream Class={data.Class} isTeacher={isTeacher} />
       </div>
       <div role="tabpanel" hidden={value !== 1}>
         <p>Class work</p>

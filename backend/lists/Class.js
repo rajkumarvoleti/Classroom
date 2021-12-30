@@ -31,7 +31,6 @@ module.exports = {
     },
     banner: {
       type: Url,
-      defaultValue: "https://gstatic.com/classroom/themes/img_read.jpg",
     },
   },
   // List-level access controls

@@ -54,6 +54,18 @@ const useStyles = makeStyles(() =>
           transition: "box-shadow 0.3s ease-in-out",
         },
       },
+      ".borderHalfD": {
+        border: "1px solid transparent",
+        borderRadius: "10px 10px 0 0",
+      },
+      ".borderHalfU": {
+        border: "1px solid transparent",
+        borderRadius: " 0 0 10px 10px",
+      },
+      ".borderFull": {
+        border: "1px solid transparent",
+        borderRadius: "10px",
+      },
     },
   })
 );

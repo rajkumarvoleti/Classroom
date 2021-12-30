@@ -1,10 +1,10 @@
 import { Container } from "@mui/material";
-import { Box } from "@mui/system";
+import StreamBanner from "./StreamBanner";
 
-export default function Stream({ Class }) {
+export default function Stream({ Class, isTeacher }) {
   return (
-    <Container maxWidth="md">
-      <Box></Box>
+    <Container maxWidth="lg">
+      <StreamBanner Class={Class} isTeacher={isTeacher} />
     </Container>
   );
 }

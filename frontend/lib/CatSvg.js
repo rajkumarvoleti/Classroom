@@ -8,7 +8,7 @@ export default function CatSvg() {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       class="catSvg"
-      style={{ width: "300px" }}
+      style={{ width: "250px" }}
     >
       <path
         d="M3 156.083C12.0042 145.648 23.2805 127.051 23.2805 127.051C38.6802 134.12 57.1094 134.204 72.5091 127.303C64.8513 136.392 58.2034 149.94 52.0603 156.251C33.0421 163.404 17.8107 160.122 3 156.083Z"
