@@ -166,8 +166,8 @@ export default function AppBarMenu2({ setMode }) {
                 open={Boolean(anchorElClass)}
                 onClose={handleCloseClassroomMenu}
               >
-                <JoinModal />
-                <CreateModal />
+                <JoinModal handleMenuClose={handleCloseClassroomMenu} />
+                <CreateModal handleMenuClose={handleCloseClassroomMenu} />
               </Menu>
 
               <Tooltip title="Open settings">

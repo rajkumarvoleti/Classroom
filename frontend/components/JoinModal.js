@@ -43,7 +43,7 @@ const result = {
   message: "You have joined the class",
 };
 
-export default function JoinModal({ simple }) {
+export default function JoinModal({ simple, handleMenuClose }) {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
   const [teacher, setTeacher] = useState(false);
@@ -56,6 +56,7 @@ export default function JoinModal({ simple }) {
 
   const handleOpen = (e) => {
     e.stopPropagation();
+    if (handleMenuClose) handleMenuClose();
     setOpen(true);
   };
   const handleClose = () => setOpen(false);

@@ -12,6 +12,7 @@ import {
   Button,
   CardActionArea,
   CardActions,
+  CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
@@ -38,6 +39,14 @@ const styles = {
       height: "180px",
     },
   },
+  header: {
+    height: "130px",
+    position: "realative",
+    background: "transparent",
+  },
+  media: {
+    // position: "absolute",
+  },
   avatar: {
     position: "absolute",
     width: "50px",
@@ -49,11 +58,17 @@ const styles = {
     position: "absolute",
     right: "30px",
     top: "20px",
+    color: "white",
   },
   action: {
     display: "flex",
     justifyContent: "flex-end",
     mx: "20px",
+  },
+  names: {
+    position: "absolute",
+    top: "50px",
+    left: "10px",
   },
 };
 
@@ -61,7 +76,7 @@ const options = ["Unenroll"];
 
 const success = {
   title: "Success",
-  messsage: "Unenrolled from the class",
+  message: "Unenrolled from the class",
   mode: "success",
 };
 
@@ -137,10 +152,6 @@ export default function ClassCard({ id }) {
     else setAnchorElMore(null);
   };
 
-  const changePage = () => {
-    console.log("You clicked me");
-  };
-
   if (loading || unEnrollLoading || status === "loading") {
     return (
       <Box sx={styles.card}>
@@ -158,13 +169,25 @@ export default function ClassCard({ id }) {
   return (
     <Fade in={!loading} timeout={{ enter: 500, exit: 500 }}>
       <Card hidden={hidden} sx={styles.card} className="elevate">
-        <CardActionArea href={`/classroom/${id}`} onClick={changePage}>
+        <CardActionArea style={styles.header} href={`/classroom/${id}`}>
           <CardMedia
             component="img"
             height="140"
-            image="https://picsum.photos/200/300"
-            alt="green iguana"
+            image={Class.banner}
+            alt={Class.name}
+            sx={styles.media}
           />
+          <Box sx={styles.names}>
+            <Typography gutterBottom variant="h5" color="white" component="div">
+              {Class.name}
+            </Typography>
+            <Typography variant="body2" color="white">
+              {Class.section}
+            </Typography>
+            <Typography variant="body2" color="white">
+              {Class.author.name}
+            </Typography>
+          </Box>
         </CardActionArea>
         <CardContent className="content">
           <Avatar
@@ -204,21 +227,6 @@ export default function ClassCard({ id }) {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
-
-          <Box>
-            <Typography gutterBottom variant="h5" component="div">
-              {Class.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {Class.subject}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {Class.section}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {Class.author.name}
-            </Typography>
           </Box>
         </CardContent>
         <Divider />

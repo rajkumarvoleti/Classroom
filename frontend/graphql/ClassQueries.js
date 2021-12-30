@@ -76,6 +76,7 @@ export const GET_CLASS_CARD_DATA = gql`
         name
         image
       }
+      banner
     }
   }
 `;
@@ -112,6 +113,7 @@ export const CLASS_DATA = gql`
       }
       studentInviteCode
       teacherInviteCode
+      banner
     }
   }
 `;

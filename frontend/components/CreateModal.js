@@ -46,7 +46,7 @@ const success = {
   mode: "success",
 };
 
-export default function CreateModal({ simple }) {
+export default function CreateModal({ simple, handleMenuClose }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [values, setValues] = useState({
@@ -65,6 +65,7 @@ export default function CreateModal({ simple }) {
 
   const handleOpen = (e) => {
     e.stopPropagation();
+    if (handleMenuClose) handleMenuClose();
     setOpen(true);
   };
   const handleClose = () => setOpen(false);

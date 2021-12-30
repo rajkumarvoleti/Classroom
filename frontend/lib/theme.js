@@ -3,6 +3,7 @@ const getDesignTokens = (mode) => ({
   palette: {
     mode,
     white: "#FEFEFF",
+    gray: "#8E8A9B",
     blue: "#2357B8",
     darkblue: "#244576",
     green: "#328985",
