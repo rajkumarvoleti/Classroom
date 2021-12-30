@@ -8,6 +8,7 @@ const { MongooseAdapter: Adapter } = require("@keystonejs/adapter-mongoose");
 const User = require("./lists/User");
 const Class = require("./lists/Class");
 const JoinClass = require("./resolvers/JoinClass");
+const UnEnroll = require("./resolvers/UnEnroll");
 
 const PROJECT_NAME = "backend";
 const adapterConfig = {
@@ -30,6 +31,9 @@ keystone.extendGraphQLSchema({
     {
       type: "type JoinClassOutput { message: String! }",
     },
+    {
+      type: "type UnEnrollOutput { message: String! }",
+    },
   ],
   mutations: [
     {
@@ -37,6 +41,11 @@ keystone.extendGraphQLSchema({
         "joinClass(code: String!,userId: ID!,isTeacher: Boolean!): JoinClassOutput",
       resolver: (parent, { code, userId, isTeacher }) =>
         JoinClass(classList, { code, userId, isTeacher }),
+    },
+    {
+      schema: "unEnroll(userId: ID!,classId: ID!): UnEnrollOutput",
+      resolver: (parent, { userId, classId }) =>
+        UnEnroll(classList, { userId, classId }),
     },
   ],
 });

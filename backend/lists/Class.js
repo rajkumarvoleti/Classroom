@@ -1,5 +1,5 @@
 const shortid = require("shortid");
-const { Text, Relationship } = require("@keystonejs/fields");
+const { Text, Relationship, Url } = require("@keystonejs/fields");
 
 module.exports = {
   fields: {
@@ -28,6 +28,10 @@ module.exports = {
       type: Text,
       unique: true,
       defaultValue: shortid.generate,
+    },
+    banner: {
+      type: Url,
+      defaultValue: "https://gstatic.com/classroom/themes/img_read.jpg",
     },
   },
   // List-level access controls
