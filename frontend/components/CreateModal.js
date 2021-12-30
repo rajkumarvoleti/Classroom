@@ -86,7 +86,6 @@ export default function CreateModal({ simple }) {
     openAlert(success);
     refetchClasses();
     handleClose();
-    // open the classroom page
   };
 
   return (

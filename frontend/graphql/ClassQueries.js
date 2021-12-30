@@ -51,6 +51,7 @@ export const GET_TEACHER_CLASSES = gql`
 export const GET_STUDENT_CLASSNAMES = gql`
   query GET_STUDENT_CLASSES($id: ID!) {
     allClasses(where: { students_some: { id: $id } }) {
+      id
       name
     }
   }
@@ -59,6 +60,7 @@ export const GET_STUDENT_CLASSNAMES = gql`
 export const GET_TEACHER_CLASSNAMES = gql`
   query GET_TEACHER_CLASSES($id: ID!) {
     allClasses(where: { teachers_some: { id: $id } }) {
+      id
       name
     }
   }
@@ -82,6 +84,34 @@ export const UNENROLL_CLASS = gql`
   mutation UNENROLL_CLASS($userId: ID!, $classId: ID!) {
     unEnroll(userId: $userId, classId: $classId) {
       message
+    }
+  }
+`;
+
+export const CLASS_DATA = gql`
+  query CLASS_DATA($id: ID!) {
+    Class(where: { id: $id }) {
+      id
+      name
+      section
+      subject
+      author {
+        id
+        name
+        image
+      }
+      teachers {
+        id
+        name
+        image
+      }
+      students {
+        id
+        name
+        image
+      }
+      studentInviteCode
+      teacherInviteCode
     }
   }
 `;

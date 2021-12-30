@@ -158,7 +158,7 @@ export default function ClassCard({ id }) {
   return (
     <Fade in={!loading} timeout={{ enter: 500, exit: 500 }}>
       <Card hidden={hidden} sx={styles.card} className="elevate">
-        <CardActionArea onClick={changePage}>
+        <CardActionArea href={`/classroom/${id}`} onClick={changePage}>
           <CardMedia
             component="img"
             height="140"

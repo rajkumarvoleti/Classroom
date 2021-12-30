@@ -10,6 +10,7 @@ import {
   Divider,
 } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import GridViewIcon from "@mui/icons-material/GridView";
 import { useQuery } from "@apollo/client";
 import CircularProgressComp from "../components/CircularProgressComp";
 import {
@@ -20,7 +21,7 @@ import {
 const ListItemComp = ({ _class }) => {
   return (
     <ListItem>
-      <ListItemButton component="a" href={`/class/${_class.id}`}>
+      <ListItemButton component="a" href={`/classroom/${_class.id}`}>
         <ListItemText primary={_class.name} />
       </ListItemButton>
     </ListItem>
@@ -74,6 +75,14 @@ export default function DrawerComp({
       <Box sx={{ width: "300px", bgcolor: "background.paper" }}>
         <nav aria-label="main mailbox folders">
           <List>
+            <ListItem>
+              <ListItemButton component="a" href="/">
+                <ListItemIcon>
+                  <GridViewIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItemButton>
+            </ListItem>
             <ListItem>
               <ListItemButton component="a" href="/dashboard">
                 <ListItemIcon>

@@ -55,11 +55,9 @@ function TabPanel({ value, index, userId, type }) {
 
   return (
     <div role="tabpanel" hidden={value !== index}>
-      {value === index && (
-        <Box sx={{ margin: "30px 10px" }}>
-          <ClassRooms classes={classes} />
-        </Box>
-      )}
+      <Box sx={{ margin: "30px 10px" }}>
+        <ClassRooms classes={classes} />
+      </Box>
     </div>
   );
 }
