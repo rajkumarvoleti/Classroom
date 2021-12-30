@@ -5,6 +5,7 @@ export const CREATE_CLASS_MUTATION = gql`
     $name: String!
     $section: String
     $subject: String
+    $banner: String
     $userId: ID!
   ) {
     createClass(
@@ -14,6 +15,7 @@ export const CREATE_CLASS_MUTATION = gql`
         subject: $subject
         author: { connect: { id: $userId } }
         teachers: { connect: [{ id: $userId }] }
+        banner: $banner
       }
     ) {
       name

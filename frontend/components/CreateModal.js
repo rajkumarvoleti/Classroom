@@ -13,6 +13,7 @@ import { CREATE_CLASS_MUTATION } from "../graphql/ClassQueries";
 import AlertComp from "./AlertComp";
 import { useEmitter } from "react-custom-events-hooks";
 import { useAlert } from "../lib/AlertContext";
+import ImagePickerComp from "./ImagePickerComp";
 
 const style = {
   position: "absolute",
@@ -54,6 +55,9 @@ export default function CreateModal({ simple, handleMenuClose }) {
     section: "",
     subject: "",
   });
+  const [banner, setBanner] = useState(
+    "https://gstatic.com/classroom/themes/img_read.jpg"
+  );
 
   const { data: session } = useSession();
   const [createClass, { data, error: classError, loading }] = useMutation(
@@ -83,7 +87,7 @@ export default function CreateModal({ simple, handleMenuClose }) {
       return;
     }
     const { id } = session.user;
-    await createClass({ variables: { ...values, userId: id } });
+    await createClass({ variables: { ...values, userId: id, banner } });
     openAlert(success);
     refetchClasses();
     handleClose();
@@ -135,6 +139,7 @@ export default function CreateModal({ simple, handleMenuClose }) {
                 variant="filled"
                 label="Subject"
               />
+              <ImagePickerComp setBanner={setBanner} />
             </Box>
             <Box className="buttonGroup">
               <LoadingButton
