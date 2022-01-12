@@ -41,7 +41,6 @@ export default function MyApp(props) {
   }, []);
 
   const handleRouteChange = (url) => {
-    console.log(url);
     if (url === "/") setHome(true);
     else setHome(false);
   };

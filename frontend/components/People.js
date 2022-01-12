@@ -38,7 +38,6 @@ function ListComp({ array }) {
 
 export default function People({ Class }) {
   const { teachers, students } = Class;
-  console.log(teachers, students);
   return (
     <Container maxWidth="md">
       <Box>
