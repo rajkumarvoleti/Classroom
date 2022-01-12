@@ -4,10 +4,7 @@ import { useSession } from "next-auth/react";
 import CircularProgressComp from "../components/CircularProgressComp";
 import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-import {
-  GET_STUDENT_CLASSES,
-  GET_TEACHER_CLASSES,
-} from "../graphql/ClassQueries";
+import { GET_STUDENT_CLASSES, GET_TEACHER_CLASSES } from "../graphql/Class";
 import { useQuery } from "@apollo/client";
 import {
   useCustomEvent,

@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import CircularProgressComp from "../../components/CircularProgressComp";
-import { CLASS_DATA } from "../../graphql/ClassQueries";
+import { CLASS_DATA } from "../../graphql/Class";
 import { useSession } from "next-auth/react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";

@@ -16,7 +16,7 @@ import CircularProgressComp from "../components/CircularProgressComp";
 import {
   GET_STUDENT_CLASSNAMES,
   GET_TEACHER_CLASSNAMES,
-} from "../graphql/ClassQueries";
+} from "../graphql/Class";
 
 const ListItemComp = ({ _class }) => {
   return (

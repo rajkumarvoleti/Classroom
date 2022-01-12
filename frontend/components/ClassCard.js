@@ -26,7 +26,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
 import { Box } from "@mui/system";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_CLASS_CARD_DATA, UNENROLL_CLASS } from "../graphql/ClassQueries";
+import { GET_CLASS_CARD_DATA, UNENROLL_CLASS } from "../graphql/Class";
 import { useSession } from "next-auth/react";
 import { useEmitter } from "react-custom-events-hooks";
 import { useAlert } from "../lib/AlertContext";

@@ -5,7 +5,10 @@ import { Box } from "@mui/system";
 import { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { PickerOverlay } from "filestack-react";
+import { useMutation } from "@apollo/client";
 import FilePreviewer from "react-file-previewer";
+import { CREATE_ANNOUNCEMENT } from "../graphql/Announcement";
+import { useAlert } from "../lib/AlertContext";
 
 const paper = {
   p: "15px",
@@ -58,8 +61,10 @@ export default function AnnouncementInput({ classId }) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [urls, setUrls] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [pick, setPick] = useState(false);
+
+  const [create, { data, error, loading }] = useMutation(CREATE_ANNOUNCEMENT);
+  const { openAlert } = useAlert();
 
   const openInput = () => setOpen(true);
   const closeInput = () => setOpen(false);
@@ -67,8 +72,34 @@ export default function AnnouncementInput({ classId }) {
   const openPick = () => setPick(true);
   const closePick = () => setPick(false);
 
-  const handleUpload = () => {
-    console.log(urls);
+  const handlePost = async () => {
+    const userId = session.user.id;
+    const links = JSON.stringify(urls);
+    console.log(typeof userId);
+    console.log(typeof classId);
+    console.log(typeof links);
+    console.log(typeof text);
+    await create({
+      variables: {
+        userId: session.user.id,
+        classId,
+        text,
+        links,
+      },
+    });
+    if (error) {
+      openAlert({
+        title: "Error",
+        mode: "error",
+        message: "Something went wrong",
+      });
+    } else {
+      openAlert({
+        title: "Success",
+        mode: "success",
+        message: "Announcement posted",
+      });
+    }
   };
 
   const handleTextChange = (e) => setText(e.target.value);
@@ -108,6 +139,11 @@ export default function AnnouncementInput({ classId }) {
               pickerOptions={pickerOptions}
             />
           )}
+          {urls[0] && (
+            <p>{`${urls.length} ${
+              urls.length == 1 ? "file" : "files"
+            } uploaded`}</p>
+          )}
           <Box className="buttons">
             <Button onClick={openPick}>Upload Files</Button>
             <Box>
@@ -118,7 +154,7 @@ export default function AnnouncementInput({ classId }) {
                 loading={loading}
                 sx={{ m: "5px" }}
                 variant="contained"
-                onClick={handleUpload}
+                onClick={handlePost}
               >
                 Post
               </LoadingButton>

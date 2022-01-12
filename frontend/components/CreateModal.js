@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import { MenuItem, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
-import { CREATE_CLASS_MUTATION } from "../graphql/ClassQueries";
+import { CREATE_CLASS_MUTATION } from "../graphql/Class";
 import AlertComp from "./AlertComp";
 import { useEmitter } from "react-custom-events-hooks";
 import { useAlert } from "../lib/AlertContext";

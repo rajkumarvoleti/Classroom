@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import { MenuItem, TextField } from "@mui/material";
 import Switch from "@mui/material/Switch";
 import { useMutation } from "@apollo/client";
-import { JOIN_CLASS } from "../graphql/ClassQueries";
+import { JOIN_CLASS } from "../graphql/Class";
 import { useSession } from "next-auth/react";
 import AlertComp from "./AlertComp";
 import { useEmitter } from "react-custom-events-hooks";
