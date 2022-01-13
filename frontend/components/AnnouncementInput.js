@@ -8,9 +8,10 @@ import { PickerOverlay } from "filestack-react";
 import { useMutation } from "@apollo/client";
 import { CREATE_ANNOUNCEMENT } from "../graphql/Announcement";
 import { useAlert } from "../lib/AlertContext";
+import { useEmitter } from "react-custom-events-hooks";
 
 const paper = {
-  p: "15px",
+  p: "30px",
   my: "10px",
   backgroundColor: "lightwhite",
 };
@@ -67,6 +68,10 @@ export default function AnnouncementInput({ classId }) {
       setUser(session.user);
     });
   }, []);
+  let refetchAnnouncements;
+  if (typeof window !== "undefined") {
+    refetchAnnouncements = useEmitter(`Announcement${classId}`);
+  }
 
   const [create, { data, error, loading }] = useMutation(CREATE_ANNOUNCEMENT);
   const { openAlert } = useAlert();
@@ -88,6 +93,10 @@ export default function AnnouncementInput({ classId }) {
         links,
       },
     });
+    refetchAnnouncements();
+    setUrls([]);
+    setText("");
+    closeInput();
     if (error) {
       openAlert({
         title: "Error",
@@ -108,7 +117,7 @@ export default function AnnouncementInput({ classId }) {
   const onUploadDone = (files) => {
     console.log(files);
     files.filesUploaded.forEach((file) => {
-      setUrls([...urls, file.url]);
+      setUrls([...urls, `${file.url}?${file.filename}`]);
     });
   };
   const onUploadError = (err) => {
@@ -127,7 +136,7 @@ export default function AnnouncementInput({ classId }) {
 
   if (!user) return <Skeleton sx={paper} variant="rectangle" height="80px" />;
   return (
-    <Paper sx={paper} elevaion={3}>
+    <Paper sx={paper} elevation={3}>
       {!open && <Paper1 image={user.image} openInput={openInput} />}
       {open && (
         <Box sx={style2}>

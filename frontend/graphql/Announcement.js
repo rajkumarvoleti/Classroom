@@ -20,3 +20,17 @@ export const CREATE_ANNOUNCEMENT = gql`
     }
   }
 `;
+
+export const ALL_ANNOUNCEMENTS = gql`
+  query ALL_ANNOUNCEMENTS($id: ID!) {
+    allAnnouncements(where: { classroom: { id: $id } }, sortBy: date_DESC) {
+      user {
+        name
+        image
+      }
+      date
+      links
+      text
+    }
+  }
+`;
