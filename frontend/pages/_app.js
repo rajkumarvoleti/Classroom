@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import AppBarMenu2 from "../components/AppBarMenu2";
 import { AlertStateProvider } from "../lib/AlertContext";
 import AlertComp from "../components/AlertComp";
+import Page from "../components/Page";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -40,19 +41,6 @@ export default function MyApp(props) {
     };
   }, []);
 
-  const handleRouteChange = (url) => {
-    if (url === "/") setHome(true);
-    else setHome(false);
-  };
-
-  useEffect(() => {
-    handleRouteChange(router.pathname);
-    router.events.on("routeChangeComplete", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, []);
-
   if (loading) return <Loading />;
 
   return (
@@ -63,9 +51,10 @@ export default function MyApp(props) {
             <AlertStateProvider>
               <CssBaseline />
               <GlobalStyles />
-              {!home && <AppBarMenu2 setMode={setMode} />}
-              <AlertComp />
-              <Component {...pageProps} />
+              <Page setMode={setMode}>
+                <AlertComp />
+                <Component {...pageProps} />
+              </Page>
             </AlertStateProvider>
           </ThemeProvider>
         </CacheProvider>

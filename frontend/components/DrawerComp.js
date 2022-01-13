@@ -17,11 +17,19 @@ import {
   GET_STUDENT_CLASSNAMES,
   GET_TEACHER_CLASSNAMES,
 } from "../graphql/Class";
+import { useRouter } from "next/router";
 
 const ListItemComp = ({ _class }) => {
+  const router = useRouter();
+
+  const go = (e) => {
+    e.preventDefault();
+    router.push(`/classroom/${_class.id}`);
+  };
+
   return (
     <ListItem>
-      <ListItemButton component="a" href={`/classroom/${_class.id}`}>
+      <ListItemButton onClick={go}>
         <ListItemText primary={_class.name} />
       </ListItemButton>
     </ListItem>
@@ -41,6 +49,8 @@ export default function DrawerComp({
     variables: { id: userId },
   });
 
+  const router = useRouter();
+
   const {
     data: teacherData,
     loading: teacherLoading,
@@ -49,8 +59,6 @@ export default function DrawerComp({
     variables: { id: userId },
   });
 
-  if (studentLoading || teacherLoading)
-    return <CircularProgressComp height={"auto"} />;
   if (studentError || teacherError) {
     console.log({ studentError, teacherError });
     return <p>Something went wrong</p>;
@@ -66,7 +74,7 @@ export default function DrawerComp({
         vertical: "top",
         horizontal: "left",
       }}
-      open={Boolean(anchorElNav)}
+      open={userId && Boolean(anchorElNav)}
       onClose={handleCloseNavMenu}
       sx={{
         display: "flex",
@@ -76,7 +84,12 @@ export default function DrawerComp({
         <nav aria-label="main mailbox folders">
           <List>
             <ListItem>
-              <ListItemButton component="a" href="/">
+              <ListItemButton
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/");
+                }}
+              >
                 <ListItemIcon>
                   <HomeOutlinedIcon />
                 </ListItemIcon>
@@ -84,7 +97,12 @@ export default function DrawerComp({
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton component="a" href="/dashboard">
+              <ListItemButton
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/dashboard");
+                }}
+              >
                 <ListItemIcon>
                   <GridViewIcon />
                 </ListItemIcon>
@@ -96,28 +114,34 @@ export default function DrawerComp({
         <Divider />
 
         <nav>
-          <List>
-            <ListSubheader>Teaching</ListSubheader>
-            {!teacherData.allClasses[0] && (
-              <ListItem>No classes to show</ListItem>
-            )}
-            {teacherData.allClasses.map((_class) => (
-              <ListItemComp key={_class.id} _class={_class} />
-            ))}
-          </List>
+          {teacherLoading && <CircularProgressComp />}
+          {!teacherLoading && (
+            <List>
+              <ListSubheader>Teaching</ListSubheader>
+              {!teacherData.allClasses[0] && (
+                <ListItem>No classes to show</ListItem>
+              )}
+              {teacherData.allClasses.map((_class) => (
+                <ListItemComp key={_class.id} _class={_class} />
+              ))}
+            </List>
+          )}
         </nav>
         <Divider />
 
         <nav>
-          <List>
-            <ListSubheader>Enrolled</ListSubheader>
-            {!studentData.allClasses[0] && (
-              <ListItem>No classes to show</ListItem>
-            )}
-            {studentData.allClasses.map((_class) => (
-              <ListItemComp key={_class.id} _class={_class} />
-            ))}
-          </List>
+          {studentLoading && <CircularProgressComp />}
+          {!studentLoading && (
+            <List>
+              <ListSubheader>Enrolled</ListSubheader>
+              {!studentData.allClasses[0] && (
+                <ListItem>No classes to show</ListItem>
+              )}
+              {studentData.allClasses.map((_class) => (
+                <ListItemComp key={_class.id} _class={_class} />
+              ))}
+            </List>
+          )}
         </nav>
         <Divider />
       </Box>

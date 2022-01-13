@@ -1,12 +1,11 @@
-import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import Paper from "@mui/material/Paper";
-import { Avatar, Button, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Skeleton, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { PickerOverlay } from "filestack-react";
 import { useMutation } from "@apollo/client";
-import FilePreviewer from "react-file-previewer";
 import { CREATE_ANNOUNCEMENT } from "../graphql/Announcement";
 import { useAlert } from "../lib/AlertContext";
 
@@ -57,11 +56,17 @@ function Paper1({ image, openInput }) {
 }
 
 export default function AnnouncementInput({ classId }) {
-  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [urls, setUrls] = useState([]);
   const [pick, setPick] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getSession().then((session) => {
+      setUser(session.user);
+    });
+  }, []);
 
   const [create, { data, error, loading }] = useMutation(CREATE_ANNOUNCEMENT);
   const { openAlert } = useAlert();
@@ -73,15 +78,11 @@ export default function AnnouncementInput({ classId }) {
   const closePick = () => setPick(false);
 
   const handlePost = async () => {
-    const userId = session.user.id;
+    const userId = user.id;
     const links = JSON.stringify(urls);
-    console.log(typeof userId);
-    console.log(typeof classId);
-    console.log(typeof links);
-    console.log(typeof text);
     await create({
       variables: {
-        userId: session.user.id,
+        userId,
         classId,
         text,
         links,
@@ -124,10 +125,10 @@ export default function AnnouncementInput({ classId }) {
 
   const apiKey = process.env.NEXT_PUBLIC_FILESTACK_API_KEY;
 
-  if (!session) return <p>loading</p>;
+  if (!user) return <Skeleton sx={paper} variant="rectangle" height="80px" />;
   return (
     <Paper sx={paper} elevaion={3}>
-      {!open && <Paper1 image={session.user.image} openInput={openInput} />}
+      {!open && <Paper1 image={user.image} openInput={openInput} />}
       {open && (
         <Box sx={style2}>
           <TextField onChange={handleTextChange} label="Type something" />

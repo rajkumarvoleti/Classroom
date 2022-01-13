@@ -1,9 +1,9 @@
 import { Box } from "@mui/system";
 import ClassRooms from "../components/ClassRooms";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import CircularProgressComp from "../components/CircularProgressComp";
 import { Tab, Tabs } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GET_STUDENT_CLASSES, GET_TEACHER_CLASSES } from "../graphql/Class";
 import { useQuery } from "@apollo/client";
 import {
@@ -30,10 +30,14 @@ function TabPanel({ value, index, userId, type }) {
     variables: { id: userId },
   });
 
-  useListener("refetchClasses", () => {
-    studentRefetch();
-    teacherRefetch();
-  });
+  if (typeof window !== "undefined") {
+    useListener("refetchClasses", () => {
+      studentRefetch();
+      teacherRefetch();
+    });
+  }
+
+  if (value !== index) return <></>;
 
   if (studentLoading || teacherLoading)
     return <CircularProgressComp height={"80vh"} />;
@@ -51,7 +55,7 @@ function TabPanel({ value, index, userId, type }) {
   else if (type === "teacher") classes = teacherClasses;
 
   return (
-    <div role="tabpanel" hidden={value !== index}>
+    <div role="tabpanel">
       <Box className="center" sx={{ margin: "30px 10px" }}>
         <ClassRooms classes={classes} />
       </Box>
@@ -59,14 +63,12 @@ function TabPanel({ value, index, userId, type }) {
   );
 }
 
-export default function DashboardPage() {
-  const { data: session, status } = useSession();
-  const [value, setValue] = useState(1);
+export default function DashboardPage({ user }) {
+  const [value, setValue] = useState(0);
 
   const handleChange = (e, newValue) => setValue(newValue);
 
-  if (status === "loading") return <CircularProgressComp height={"100vh"} />;
-  if (!session) return <p>please login</p>;
+  if (!user) return <p>please login</p>;
   return (
     <Box sx={{ margin: "10px" }}>
       <Box className="center" sx={{ width: "100vw" }}>
@@ -76,19 +78,18 @@ export default function DashboardPage() {
           <Tab label="Teaching" />
         </Tabs>
       </Box>
-      <TabPanel userId={session.user.id} value={value} type="all" index={0} />
-      <TabPanel
-        userId={session.user.id}
-        value={value}
-        type="student"
-        index={1}
-      />
-      <TabPanel
-        userId={session.user.id}
-        value={value}
-        type="teacher"
-        index={2}
-      />
+      <TabPanel userId={user.id} value={value} type="all" index={0} />
+      <TabPanel userId={user.id} value={value} type="student" index={1} />
+      <TabPanel userId={user.id} value={value} type="teacher" index={2} />
     </Box>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  return {
+    props: {
+      user: session?.user || null,
+    },
+  };
 }

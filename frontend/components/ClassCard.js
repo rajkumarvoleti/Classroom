@@ -21,6 +21,7 @@ import {
   Fade,
   IconButton,
   LinearProgress,
+  Skeleton,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
@@ -30,6 +31,7 @@ import { GET_CLASS_CARD_DATA, UNENROLL_CLASS } from "../graphql/Class";
 import { useSession } from "next-auth/react";
 import { useEmitter } from "react-custom-events-hooks";
 import { useAlert } from "../lib/AlertContext";
+import { useRouter } from "next/router";
 
 const styles = {
   card: {
@@ -121,6 +123,8 @@ export default function ClassCard({ id }) {
   const { data: session, status } = useSession();
   const { openAlert } = useAlert();
 
+  const router = useRouter();
+
   const [anchorElMore, setAnchorElMore] = useState(null);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
@@ -152,10 +156,20 @@ export default function ClassCard({ id }) {
     else setAnchorElMore(null);
   };
 
+  const go = (e) => {
+    e.preventDefault();
+    router.push(`/classroom/${id}`);
+  };
+
   if (loading || unEnrollLoading || status === "loading") {
     return (
       <Box sx={styles.card}>
-        <LinearProgress />
+        <Skeleton
+          variant="rectangular"
+          width="280px"
+          height="360px"
+          animation="wave"
+        />
       </Box>
     );
   }
@@ -169,7 +183,7 @@ export default function ClassCard({ id }) {
   return (
     <Fade in={!loading} timeout={{ enter: 500, exit: 500 }}>
       <Card hidden={hidden} sx={styles.card} className="elevate">
-        <CardActionArea style={styles.header} href={`/classroom/${id}`}>
+        <CardActionArea style={styles.header} onClick={go}>
           <CardMedia
             component="img"
             height="140"

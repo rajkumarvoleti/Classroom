@@ -2,16 +2,15 @@ import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import CircularProgressComp from "../../components/CircularProgressComp";
 import { CLASS_DATA } from "../../graphql/Class";
-import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import Stream from "../../components/Stream";
 import People from "../../components/People";
 
-export default function ClassroomPage() {
+export default function ClassroomPage({ user }) {
   const router = useRouter();
   const { id } = router.query;
-  const { data: session, status } = useSession();
 
   const {
     data,
@@ -24,15 +23,14 @@ export default function ClassroomPage() {
   const [value, setValue] = useState(0);
   const handleChange = (e, newValue) => setValue(newValue);
 
-  if (classLoading || status === "loading")
-    return <CircularProgressComp height="80vh" />;
+  if (classLoading) return <CircularProgressComp height="80vh" />;
   if (error) {
     console.log(error);
     return <p>Something went wrong</p>;
   }
 
   const isTeacher = data.Class.teachers.find(
-    (teacher) => teacher.id === session.user.id
+    (teacher) => teacher.id === user.id
   );
 
   return (
@@ -61,4 +59,13 @@ export default function ClassroomPage() {
       )}
     </Box>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  return {
+    props: {
+      user: session?.user || null,
+    },
+  };
 }

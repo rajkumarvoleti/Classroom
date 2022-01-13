@@ -71,7 +71,8 @@ export default function HomePage({ user }) {
     },
   };
 
-  const goToClassroom = async () => {
+  const goToClassroom = async (e) => {
+    e.preventDefault();
     if (!user) signIn();
     router.push("/dashboard");
   };

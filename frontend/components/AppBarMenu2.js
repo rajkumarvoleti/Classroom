@@ -14,11 +14,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@emotion/react";
 import { getSession, signOut } from "next-auth/react";
 import logo from "../images/logoBg.png";
-import { useScrollTrigger } from "@mui/material";
+import { CircularProgress, useScrollTrigger } from "@mui/material";
 import { DarkmodeSwitch } from "./DarkmodeSwitch";
 import DrawerComp from "./DrawerComp";
 import JoinModal from "./JoinModal";
 import CreateModal from "./CreateModal";
+import CircularProgressComp from "./CircularProgressComp";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -39,7 +40,7 @@ export default function AppBarMenu2({ setMode }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElClass, setAnchorElClass] = React.useState(null);
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = React.useState("loading");
 
   React.useEffect(() => {
     getSession().then((res) => {
@@ -89,7 +90,7 @@ export default function AppBarMenu2({ setMode }) {
     },
   };
 
-  if (!user) return <p></p>;
+  if (!user) return <p>Please login</p>;
 
   return (
     <ElevationScroll>
@@ -112,11 +113,13 @@ export default function AppBarMenu2({ setMode }) {
               >
                 <MenuIcon />
               </IconButton>
-              <DrawerComp
-                anchorElNav={anchorElNav}
-                handleCloseNavMenu={handleCloseNavMenu}
-                userId={user.id}
-              />
+              {user?.id && (
+                <DrawerComp
+                  anchorElNav={anchorElNav}
+                  handleCloseNavMenu={handleCloseNavMenu}
+                  userId={user.id}
+                />
+              )}
             </Box>
 
             <Typography
@@ -172,11 +175,14 @@ export default function AppBarMenu2({ setMode }) {
 
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    sx={{ border: "1px solid darkblue" }}
-                    alt="Remy Sharp"
-                    src={user.image}
-                  />
+                  {user === "loading" && <CircularProgress />}
+                  {user !== "loading" && (
+                    <Avatar
+                      sx={{ border: "1px solid darkblue" }}
+                      alt="Remy Sharp"
+                      src={user.image}
+                    />
+                  )}
                 </IconButton>
               </Tooltip>
               <Menu
