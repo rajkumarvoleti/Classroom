@@ -12,8 +12,8 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development DISABLE_LOGGING=true keystone dev",
-    "build": "cross-env NODE_ENV=production keystone build",
-    "start": "cross-env NODE_ENV=production keystone start",
+    "build": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider keystone build",
+    "start": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider keystone start",
     "create-tables": "cross-env CREATE_TABLES=true keystone create-tables"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "@keystonejs/fields": "^22.1.3",
     "@keystonejs/keystone": "^19.3.3",
     "apollo-server-express": "^3.5.0",
+    "connect-mongo": "^4.6.0",
     "cross-env": "^7.0.3",
     "short-unique-id": "^4.4.4",
     "shortid": "^2.2.16",

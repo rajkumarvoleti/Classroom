@@ -8,7 +8,7 @@ export default function Page({ children, setMode }) {
   const router = useRouter();
 
   const handleRouteChange = (url) => {
-    if (url === "/") setHome(true);
+    if (url === "/" || url.includes("sign")) setHome(true);
     else setHome(false);
   };
 

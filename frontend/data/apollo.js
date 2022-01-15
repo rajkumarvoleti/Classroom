@@ -9,7 +9,7 @@ export function getApolloClient(forceNew) {
   if (!CLIENT || forceNew) {
     CLIENT = new ApolloClient({
       ssrMode: isServer,
-      uri: "http://localhost:3000/admin/api",
+      uri: process.env.NEXT_PUBLIC_BACKEND_URI,
       cache: new InMemoryCache().restore(windowApolloState || {}),
 
       // Default options to disable SSR for all queries.
@@ -27,6 +27,6 @@ export function getApolloClient(forceNew) {
       // },
     });
   }
-
+  console.log(process.env.NEXT_PUBLIC_BACKEND_URI);
   return CLIENT;
 }
