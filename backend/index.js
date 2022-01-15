@@ -7,6 +7,7 @@ require("dotenv").config();
 const { MongooseAdapter: Adapter } = require("@keystonejs/adapter-mongoose");
 const User = require("./lists/User");
 const Class = require("./lists/Class");
+const Announcement = require("./lists/Announcement");
 const JoinClass = require("./resolvers/JoinClass");
 const UnEnroll = require("./resolvers/UnEnroll");
 const MongoStore = require("connect-mongo");
@@ -31,6 +32,7 @@ const keystone = new Keystone({
 //lists
 const userList = keystone.createList("User", User);
 const classList = keystone.createList("Class", Class);
+keystone.createList("Announcement", Announcement);
 
 //extendedschemas
 keystone.extendGraphQLSchema({

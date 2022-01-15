@@ -27,6 +27,5 @@ export function getApolloClient(forceNew) {
       // },
     });
   }
-  console.log(process.env.NEXT_PUBLIC_BACKEND_URI);
   return CLIENT;
 }

@@ -30,7 +30,7 @@ export default function ClassroomPage({ user }) {
   }
 
   const isTeacher = data.Class.teachers.find(
-    (teacher) => teacher.id === user.id
+    (teacher) => teacher?.id === user?.id
   );
 
   return (
