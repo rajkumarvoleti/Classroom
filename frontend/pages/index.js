@@ -9,6 +9,7 @@ import { BackgroundParticles } from "../components/BackgroundParticles";
 import { useRouter } from "next/dist/client/router";
 import { signIn, signOut, getSession } from "next-auth/react";
 import AppBarMenu1 from "../components/AppBarMenu1";
+import Head from "next/head";
 
 export default function HomePage({ user }) {
   const router = useRouter();
@@ -79,18 +80,21 @@ export default function HomePage({ user }) {
 
   return (
     <div>
+      <Head>
+        <title>Classroom</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <AppBarMenu1 user={user} />
       <div style={styles.main}>
         <BackgroundParticles />
         <Grid container spacing={2} sx={styles.grid}>
           <Grid item md={12} lg={6} sx={styles.head}>
-            <h1>The teacher’s choice for over a decade</h1>
+            <h1>The teacher’s best choice to boost collaboration</h1>
             <p>
-              Satchel One is a Google for Education Partner, Microsoft Partner
-              and is trusted by 1 in 3 UK secondary schools. Our award-winning
-              learning platform integrates seamlessly with Google Classroom and
-              Microsoft Teams, forming meaningful relationships, and helping
-              schools deliver the ultimate learning experience.
+              For teachers and students, the education-friendly platform
+              Classroom brings the benefits of paperless sharing, assessment,
+              and digital collaboration to classrooms.Without a doubt, it is
+              great for remote learning, and class updates
             </p>
             <Button
               onClick={goToClassroom}

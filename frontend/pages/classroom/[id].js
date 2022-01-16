@@ -7,6 +7,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import Stream from "../../components/Stream";
 import People from "../../components/People";
+import Head from "next/head";
 
 export default function ClassroomPage({ user }) {
   const router = useRouter();
@@ -35,28 +36,32 @@ export default function ClassroomPage({ user }) {
 
   return (
     <Box>
+      <Head>
+        <title>{data.Class.name}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Box className="center">
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Stream" />
-          <Tab label="Classwork" />
+          {/* <Tab label="Classwork" /> */}
           <Tab label="People" />
-          {isTeacher && <Tab label="Marks" />}
+          {/* {isTeacher && <Tab label="Marks" />} */}
         </Tabs>
       </Box>
       <div role="tabpanel" hidden={value !== 0}>
         <Stream Class={data.Class} isTeacher={isTeacher} />
       </div>
-      <div role="tabpanel" hidden={value !== 1}>
+      {/* <div role="tabpanel" hidden={value !== 1}>
         <p>Class work</p>
-      </div>
-      <div role="tabpanel" hidden={value !== 2}>
+      </div> */}
+      <div role="tabpanel" hidden={value !== 1}>
         <People Class={data.Class} />
       </div>
-      {isTeacher && (
+      {/* {isTeacher && (
         <div role="tabpanel" hidden={value !== 3}>
           <p>Marks</p>
         </div>
-      )}
+      )} */}
     </Box>
   );
 }

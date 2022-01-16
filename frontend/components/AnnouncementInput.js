@@ -115,7 +115,6 @@ export default function AnnouncementInput({ classId }) {
   const handleTextChange = (e) => setText(e.target.value);
 
   const onUploadDone = (files) => {
-    console.log(files);
     files.filesUploaded.forEach((file) => {
       setUrls([...urls, `${file.url}?${file.filename}`]);
     });

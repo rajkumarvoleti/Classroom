@@ -137,9 +137,9 @@ export default function AppBarMenu2({ setMode }) {
             </Typography>
 
             <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
-              <Box>
+              {/* <Box>
                 <DarkmodeSwitch onChange={handleTheme} />
-              </Box>
+              </Box> */}
 
               <Tooltip title="Create or Join a class">
                 <IconButton

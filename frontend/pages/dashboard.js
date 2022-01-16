@@ -11,6 +11,7 @@ import {
   useEmitter,
   useListener,
 } from "react-custom-events-hooks";
+import Head from "next/head";
 
 function TabPanel({ value, index, userId, type }) {
   const {
@@ -71,6 +72,10 @@ export default function DashboardPage({ user }) {
   if (!user) return <p>please login</p>;
   return (
     <Box sx={{ margin: "10px" }}>
+      <Head>
+        <title>Classroom-Dashboard</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Box className="center" sx={{ width: "100vw" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="All Classes" />

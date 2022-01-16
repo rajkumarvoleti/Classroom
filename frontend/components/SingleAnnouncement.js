@@ -29,7 +29,6 @@ const getFileName = (url) => {
 };
 
 function FileComp({ url }) {
-  console.log(url);
   const fileName = getFileName(url);
   return (
     <Box sx={{ display: "flex" }}>

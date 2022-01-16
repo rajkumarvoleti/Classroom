@@ -114,7 +114,9 @@ export default function DrawerComp({
         <Divider />
 
         <nav>
-          {teacherLoading && <CircularProgressComp />}
+          {teacherLoading && (
+            <CircularProgressComp width="300px" height="200px" />
+          )}
           {!teacherLoading && (
             <List>
               <ListSubheader>Teaching</ListSubheader>
@@ -130,7 +132,9 @@ export default function DrawerComp({
         <Divider />
 
         <nav>
-          {studentLoading && <CircularProgressComp />}
+          {studentLoading && (
+            <CircularProgressComp width="300px" height="200px" />
+          )}
           {!studentLoading && (
             <List>
               <ListSubheader>Enrolled</ListSubheader>

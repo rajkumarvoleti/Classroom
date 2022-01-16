@@ -20,7 +20,16 @@ export default function ClassRooms({ classes }) {
   return (
     <Grid sx={style} container>
       {classes.map((_class) => (
-        <Grid sx={{ padding: "10px" }} item xs={12} sm={6} md={4} lg={3} xl={2}>
+        <Grid
+          key={_class.id}
+          sx={{ padding: "10px" }}
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+          xl={2}
+        >
           <ClassCard id={_class.id} key={_class.id} />
         </Grid>
       ))}

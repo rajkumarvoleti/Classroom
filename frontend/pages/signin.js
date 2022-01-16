@@ -5,6 +5,8 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { Button } from "@mui/material";
 import logo from "../images/logoBg.png";
+import Head from "next/head";
+
 const styles = {
   boxOuter: {
     display: "flex",
@@ -69,6 +71,10 @@ function signin({ providers }) {
   if (!providers) return null;
   return (
     <Box sx={styles.boxOuter}>
+      <Head>
+        <title>Classroom</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Box sx={styles.boxInner}>
         <Box sx={styles.head}>
           <h2>Sign In to Classroom</h2>
