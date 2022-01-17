@@ -20,7 +20,7 @@ const useStyles = makeStyles(() =>
       },
       body: {
         height: "100%",
-        width: "100%",
+        width: "100vw",
         overflowX: "hidden",
       },
       "#root": {
@@ -65,6 +65,11 @@ const useStyles = makeStyles(() =>
       ".borderFull": {
         border: "1px solid transparent",
         borderRadius: "10px",
+      },
+      ".menubarImage": {
+        margin: "0 10px",
+        width: "60px",
+        height: "auto",
       },
     },
   })

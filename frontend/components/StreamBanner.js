@@ -88,7 +88,9 @@ export default function StreamBanner({ Class, isTeacher }) {
           className={info ? "borderHalfD" : "borderFull"}
         />
         <CardContent sx={styles.content}>
-          <Typography variant="h4">{Class.name}</Typography>
+          <Typography sx={{ maxWidth: "60vw" }} variant="h4">
+            {Class.name}
+          </Typography>
           <Typography>{Class.section}</Typography>
           {isTeacher && (
             <IconButton

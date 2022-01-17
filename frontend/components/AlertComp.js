@@ -17,6 +17,7 @@ export default function AlertComp() {
       open={visible}
       onClose={closeAlert}
       TransitionComponent={Transition}
+      sx={{ maxWidth: "80vw" }}
     >
       <Alert onClose={closeAlert} severity={mode} sx={{ width: "100%" }}>
         <AlertTitle>{title}</AlertTitle>

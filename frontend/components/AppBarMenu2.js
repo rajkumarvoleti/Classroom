@@ -68,6 +68,7 @@ export default function AppBarMenu2({ setMode }) {
   const [anchorElInfo, setAnchorElInfo] = React.useState(null);
   const [user, setUser] = React.useState("loading");
 
+  const theme = useTheme();
   React.useEffect(() => {
     getSession().then((res) => {
       if (res?.user) setUser(res.user);
@@ -163,11 +164,9 @@ export default function AppBarMenu2({ setMode }) {
               component="div"
               sx={{ mr: 0, display: "flex", flexGrow: 1 }}
             >
-              <img
-                style={{ margin: "0 10px", width: "60px", height: "auto" }}
-                src={logo.src}
-                alt="logo"
-              />
+              <Box sx={{ [theme.breakpoints.down("sm")]: { display: "none" } }}>
+                <img className="menubarImage" src={logo.src} alt="logo" />
+              </Box>
               Class Room
             </Typography>
 

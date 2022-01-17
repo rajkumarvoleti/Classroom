@@ -22,7 +22,7 @@ function ListComp({ array }) {
   return (
     <List dense>
       {array.map((user) => (
-        <>
+        <Box key={user.id}>
           <ListItem sx={{ m: "10px" }}>
             <ListItemAvatar>
               <Avatar src={user.image} alt={user.name} />
@@ -30,7 +30,7 @@ function ListComp({ array }) {
             <ListItemText>{user.name}</ListItemText>
           </ListItem>
           <Divider />
-        </>
+        </Box>
       ))}
     </List>
   );

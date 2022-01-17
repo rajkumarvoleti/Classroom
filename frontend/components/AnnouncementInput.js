@@ -44,6 +44,9 @@ const style2 = {
     alignItems: "center",
     justifyContent: "space-between",
     mt: "10px",
+    ["@media (max-width:780px)"]: {
+      flexDirection: "column",
+    },
   },
 };
 
@@ -82,6 +85,11 @@ export default function AnnouncementInput({ classId }) {
   const openPick = () => setPick(true);
   const closePick = () => setPick(false);
 
+  const handleClose = () => {
+    setUrls([]);
+    setText("");
+    closeInput();
+  };
   const handlePost = async () => {
     const userId = user.id;
     const links = JSON.stringify(urls);
@@ -94,9 +102,7 @@ export default function AnnouncementInput({ classId }) {
       },
     });
     refetchAnnouncements();
-    setUrls([]);
-    setText("");
-    closeInput();
+    handleClose();
     if (error) {
       openAlert({
         title: "Error",
@@ -114,10 +120,11 @@ export default function AnnouncementInput({ classId }) {
 
   const handleTextChange = (e) => setText(e.target.value);
 
-  const onUploadDone = (files) => {
-    files.filesUploaded.forEach((file) => {
-      setUrls([...urls, `${file.url}?${file.filename}`]);
-    });
+  const onUploadDone = (obj) => {
+    const files = obj.filesUploaded.map(
+      (file) => `${file.url}?${file.filename}`
+    );
+    setUrls([...urls, ...files]);
   };
   const onUploadError = (err) => {
     console.log(err);
@@ -143,7 +150,9 @@ export default function AnnouncementInput({ classId }) {
           {pick && (
             <PickerOverlay
               apikey={apiKey}
-              onUploadDone={onUploadDone}
+              onSuccess={onUploadDone}
+              // onUploadDone={onUploadDone}
+
               onError={onUploadError}
               pickerOptions={pickerOptions}
             />
@@ -156,7 +165,11 @@ export default function AnnouncementInput({ classId }) {
           <Box className="buttons">
             <Button onClick={openPick}>Upload Files</Button>
             <Box>
-              <Button sx={{ m: "5px" }} variant="outlined" onClick={closeInput}>
+              <Button
+                sx={{ m: "5px" }}
+                variant="outlined"
+                onClick={handleClose}
+              >
                 Cancel
               </Button>
               <LoadingButton
