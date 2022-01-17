@@ -10,7 +10,10 @@ export default function NoClasses({ userId }) {
   return (
     <Box className="center" sx={{ width: "100vw", height: "70vh" }}>
       <img src={svg} alt="No classes" />
-      <p>You have no classes</p>
+      <p>
+        You have no classes. Check the info option at the top if you don't have
+        any invite codes.
+      </p>
       <Stack direction="row" spacing={2}>
         <Button sx={{ textTransform: "none" }} size="small" variant="outlined">
           <CreateModal userId={userId} simple={true} />
