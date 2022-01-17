@@ -57,7 +57,7 @@ export default function HomePage({ user }) {
     grid: {
       padding: "0 40px",
       [theme.breakpoints.down("md")]: {
-        marginTop: "150px",
+        marginTop: "75px",
       },
     },
     headImage: {
@@ -89,12 +89,11 @@ export default function HomePage({ user }) {
         <BackgroundParticles />
         <Grid container spacing={2} sx={styles.grid}>
           <Grid item md={12} lg={6} sx={styles.head}>
-            <h1>The teacher’s best choice to boost collaboration</h1>
+            <h1>Teacher’s best choice to boost collaboration</h1>
             <p>
               For teachers and students, the education-friendly platform
               Classroom brings the benefits of paperless sharing, assessment,
-              and digital collaboration to classrooms.Without a doubt, it is
-              great for remote learning, and class updates
+              and digital collaboration to classrooms.
             </p>
             <Button
               onClick={goToClassroom}

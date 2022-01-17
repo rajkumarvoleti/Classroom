@@ -19,9 +19,16 @@ import { DarkmodeSwitch } from "./DarkmodeSwitch";
 import DrawerComp from "./DrawerComp";
 import JoinModal from "./JoinModal";
 import CreateModal from "./CreateModal";
-import CircularProgressComp from "./CircularProgressComp";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { useAlert } from "../lib/AlertContext";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import Divider from "@mui/material/Divider";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+const studentInviteCodes = ["k40cv9Q2c", "cTDcNY_2_", "z7gZLTOw5"];
+const teacherInviteCodes = ["0pZicXNZii", "Scf3f6wnuw", "	W2uO--D-D0"];
 
 function ElevationScroll(props) {
   const { children } = props;
@@ -35,11 +42,30 @@ function ElevationScroll(props) {
   });
 }
 
+function CopyButton({ text }) {
+  const { openAlert } = useAlert();
+  const handleCopy = () => {
+    openAlert({ mode: "success", title: "Copied!" });
+  };
+
+  return (
+    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <p>{text}</p>
+      <CopyToClipboard onCopy={handleCopy} text={text}>
+        <IconButton>
+          <ContentCopyIcon sx={{ ml: "10px", fontSize: "20px" }} />
+        </IconButton>
+      </CopyToClipboard>
+    </Box>
+  );
+}
+
 export default function AppBarMenu2({ setMode }) {
   const { palette } = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElClass, setAnchorElClass] = React.useState(null);
+  const [anchorElInfo, setAnchorElInfo] = React.useState(null);
   const [user, setUser] = React.useState("loading");
 
   React.useEffect(() => {
@@ -49,6 +75,7 @@ export default function AppBarMenu2({ setMode }) {
   }, []);
 
   const handleOpenNavMenu = (event) => {
+    event.stopPropagation();
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
@@ -56,7 +83,12 @@ export default function AppBarMenu2({ setMode }) {
     setAnchorElUser(event.currentTarget);
   };
   const handleClassroomMenu = (event) => {
+    event.stopPropagation();
     setAnchorElClass(event.currentTarget);
+  };
+  const handleOpenInfo = (event) => {
+    event.stopPropagation();
+    setAnchorElInfo(event.currentTarget);
   };
 
   const handleCloseNavMenu = (setting) => {
@@ -73,6 +105,10 @@ export default function AppBarMenu2({ setMode }) {
 
   const handleCloseClassroomMenu = () => {
     setAnchorElClass(null);
+  };
+
+  const handleCloseInfo = () => {
+    setAnchorElInfo(null);
   };
 
   const handleTheme = (val) => {
@@ -104,7 +140,6 @@ export default function AppBarMenu2({ setMode }) {
               }}
             >
               <IconButton
-                size="large"
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
@@ -126,7 +161,7 @@ export default function AppBarMenu2({ setMode }) {
               variant="h6"
               noWrap
               component="div"
-              sx={{ mr: 2, display: "flex", flexGrow: 1 }}
+              sx={{ mr: 0, display: "flex", flexGrow: 1 }}
             >
               <img
                 style={{ margin: "0 10px", width: "60px", height: "auto" }}
@@ -141,21 +176,48 @@ export default function AppBarMenu2({ setMode }) {
                 <DarkmodeSwitch onChange={handleTheme} />
               </Box> */}
 
-              <Tooltip title="Create or Join a class">
-                <IconButton
-                  aria-label="add classroom"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                  sx={{ mx: "10px" }}
-                  onClick={handleClassroomMenu}
-                >
-                  <AddIcon sx={{ fontSize: "30px" }} />
+              <Tooltip title="Here are few class codes that might help">
+                <IconButton sx={{ p: { xs: "5px" } }} onClick={handleOpenInfo}>
+                  <InfoOutlinedIcon color="action" />
                 </IconButton>
               </Tooltip>
               <Menu
                 sx={{ mt: "45px" }}
-                id="menu-appbar"
+                anchorEl={anchorElInfo}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElInfo)}
+                onClose={handleCloseInfo}
+              >
+                <Box sx={{ mx: "20px" }}>
+                  <p>Student Invite Codes</p>
+                  {studentInviteCodes.map((code) => (
+                    <CopyButton key={code} text={code} />
+                  ))}
+                  <Divider />
+                  <p>Teacher Invite Codes</p>
+                  {teacherInviteCodes.map((code) => (
+                    <CopyButton key={code} text={code} />
+                  ))}
+                </Box>
+              </Menu>
+              <Tooltip title="Create or Join a class">
+                <IconButton
+                  sx={{ p: { xs: "5px" } }}
+                  onClick={handleClassroomMenu}
+                >
+                  <AddIcon color="action" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
                 anchorEl={anchorElClass}
                 anchorOrigin={{
                   vertical: "top",
@@ -169,12 +231,18 @@ export default function AppBarMenu2({ setMode }) {
                 open={Boolean(anchorElClass)}
                 onClose={handleCloseClassroomMenu}
               >
-                <JoinModal handleMenuClose={handleCloseClassroomMenu} />
-                <CreateModal handleMenuClose={handleCloseClassroomMenu} />
+                <JoinModal
+                  userId={user.id}
+                  handleMenuClose={handleCloseClassroomMenu}
+                />
+                <CreateModal
+                  userId={user.id}
+                  handleMenuClose={handleCloseClassroomMenu}
+                />
               </Menu>
 
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <IconButton onClick={handleOpenUserMenu}>
                   {user === "loading" && <CircularProgress />}
                   {user !== "loading" && (
                     <Avatar
@@ -187,7 +255,6 @@ export default function AppBarMenu2({ setMode }) {
               </Tooltip>
               <Menu
                 sx={{ mt: "45px" }}
-                id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
                   vertical: "top",

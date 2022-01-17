@@ -7,10 +7,8 @@ import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 import { MenuItem, TextField } from "@mui/material";
-import { useSession } from "next-auth/react";
 import { useMutation } from "@apollo/client";
 import { CREATE_CLASS_MUTATION } from "../graphql/Class";
-import AlertComp from "./AlertComp";
 import { useEmitter } from "react-custom-events-hooks";
 import { useAlert } from "../lib/AlertContext";
 import ImagePickerComp from "./ImagePickerComp";
@@ -47,7 +45,7 @@ const success = {
   mode: "success",
 };
 
-export default function CreateModal({ simple, handleMenuClose }) {
+export default function CreateModal({ simple, handleMenuClose, userId }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const [values, setValues] = useState({
@@ -59,7 +57,6 @@ export default function CreateModal({ simple, handleMenuClose }) {
     "https://gstatic.com/classroom/themes/img_read.jpg"
   );
 
-  const { data: session } = useSession();
   const [createClass, { data, error: classError, loading }] = useMutation(
     CREATE_CLASS_MUTATION
   );
@@ -86,8 +83,7 @@ export default function CreateModal({ simple, handleMenuClose }) {
       setError(true);
       return;
     }
-    const { id } = session.user;
-    await createClass({ variables: { ...values, userId: id, banner } });
+    await createClass({ variables: { ...values, userId, banner } });
     openAlert(success);
     refetchClasses();
     handleClose();

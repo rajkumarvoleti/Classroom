@@ -61,7 +61,7 @@ export default function DrawerComp({
 
   if (studentError || teacherError) {
     console.log({ studentError, teacherError });
-    return <p>Something went wrong</p>;
+    return <p>Something went wrong. Please try refreshing the page</p>;
   }
 
   return (

@@ -19,7 +19,7 @@ export default function AllAnnouncements({ classId }) {
 
   if (error) {
     console.log(error);
-    return <p>Something went wrong</p>;
+    return <p>Something went wrong. Please try refreshing the page</p>;
   }
   if (loading) return <CircularProgressComp height="30vh" />;
 

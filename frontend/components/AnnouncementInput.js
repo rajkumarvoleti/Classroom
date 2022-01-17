@@ -101,7 +101,7 @@ export default function AnnouncementInput({ classId }) {
       openAlert({
         title: "Error",
         mode: "error",
-        message: "Something went wrong",
+        message: "Something went wrong. Please try refreshing the page",
       });
     } else {
       openAlert({

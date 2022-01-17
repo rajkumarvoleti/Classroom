@@ -11,7 +11,6 @@ import { MenuItem, TextField } from "@mui/material";
 import Switch from "@mui/material/Switch";
 import { useMutation } from "@apollo/client";
 import { JOIN_CLASS } from "../graphql/Class";
-import { useSession } from "next-auth/react";
 import AlertComp from "./AlertComp";
 import { useEmitter } from "react-custom-events-hooks";
 import { useAlert } from "../lib/AlertContext";
@@ -43,7 +42,7 @@ const result = {
   message: "You have joined the class",
 };
 
-export default function JoinModal({ simple, handleMenuClose }) {
+export default function JoinModal({ simple, handleMenuClose, userId }) {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
   const [teacher, setTeacher] = useState(false);
@@ -51,7 +50,6 @@ export default function JoinModal({ simple, handleMenuClose }) {
 
   const [joinClass, { data, error: classError, loading }] =
     useMutation(JOIN_CLASS);
-  const { data: session, status } = useSession();
   const { openAlert } = useAlert();
 
   const handleOpen = (e) => {
@@ -66,12 +64,10 @@ export default function JoinModal({ simple, handleMenuClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { id } = session.user;
-    console.log({ code, id, teacher });
     const res = await joinClass({
       variables: {
         code: code,
-        userId: id,
+        userId,
         isTeacher: teacher,
       },
     });
@@ -92,7 +88,8 @@ export default function JoinModal({ simple, handleMenuClose }) {
     setError(null);
   }, []);
 
-  if (classError) return <p>Something went wrong {error}</p>;
+  if (classError)
+    return <p>Something went wrong. Please try refreshing the page {error}</p>;
 
   return (
     <Box>

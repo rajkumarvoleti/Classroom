@@ -27,7 +27,7 @@ export default function ClassroomPage({ user }) {
   if (classLoading) return <CircularProgressComp height="80vh" />;
   if (error) {
     console.log(error);
-    return <p>Something went wrong</p>;
+    return <p>Something went wrong. Please try refreshing the page</p>;
   }
 
   const isTeacher = data.Class.teachers.find(

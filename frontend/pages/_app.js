@@ -1,5 +1,5 @@
 import { ApolloProvider } from "@apollo/client";
-import { getSession, SessionProvider } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import { getApolloClient } from "../data/apollo";
 import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "../lib/createEmotionCache";
@@ -11,10 +11,10 @@ import getDesignToken from "../lib/theme";
 import GlobalStyles from "../lib/GlobalStyles";
 import Loading from "../components/Loading";
 import { useRouter } from "next/router";
-import AppBarMenu2 from "../components/AppBarMenu2";
 import { AlertStateProvider } from "../lib/AlertContext";
 import AlertComp from "../components/AlertComp";
 import Page from "../components/Page";
+import Head from "next/head";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -25,7 +25,6 @@ export default function MyApp(props) {
   const theme = React.useMemo(() => createTheme(getDesignToken(mode)), [mode]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [home, setHome] = useState(false);
 
   const startLoading = () => setLoading(true);
   const stopLoading = () => setLoading(false);
@@ -44,21 +43,46 @@ export default function MyApp(props) {
   if (loading) return <Loading />;
 
   return (
-    <ApolloProvider client={client}>
-      <SessionProvider session={pageProps?.session}>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={theme}>
-            <AlertStateProvider>
-              <CssBaseline />
-              <GlobalStyles />
-              <Page setMode={setMode}>
-                <AlertComp />
-                <Component {...pageProps} />
-              </Page>
-            </AlertStateProvider>
-          </ThemeProvider>
-        </CacheProvider>
-      </SessionProvider>
-    </ApolloProvider>
+    <>
+      <Head>
+        <link
+          rel="shortcut icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+          alt="icon"
+        />
+        <link
+          rel="shortcut icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+          alt="icon"
+        />
+        <link
+          rel="shortcut icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+          alt="icon"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+      </Head>
+      <ApolloProvider client={client}>
+        <SessionProvider session={pageProps?.session}>
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={theme}>
+              <AlertStateProvider>
+                <CssBaseline />
+                <GlobalStyles />
+                <Page setMode={setMode}>
+                  <AlertComp />
+                  <Component {...pageProps} />
+                </Page>
+              </AlertStateProvider>
+            </ThemeProvider>
+          </CacheProvider>
+        </SessionProvider>
+      </ApolloProvider>
+    </>
   );
 }

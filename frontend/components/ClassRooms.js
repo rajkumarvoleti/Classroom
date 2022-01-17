@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 import ClassCard from "./ClassCard";
 import NoClasses from "./NoClasses";
 
-export default function ClassRooms({ classes }) {
+export default function ClassRooms({ classes, userId }) {
   const theme = useTheme();
 
   const style = {
@@ -15,7 +15,7 @@ export default function ClassRooms({ classes }) {
     maxWidth: "90vw",
   };
 
-  if (!classes[0]) return <NoClasses />;
+  if (!classes[0]) return <NoClasses userId={userId} />;
 
   return (
     <Grid sx={style} container>

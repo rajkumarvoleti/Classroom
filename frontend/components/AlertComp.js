@@ -35,5 +35,6 @@ AlertComp.propTypes = {
 
 AlertComp.defaultProps = {
   title: "Error",
-  message: "Something went wrong. Please try again",
+  message:
+    "Something went wrong. Please try refreshing the page. Please try again",
 };

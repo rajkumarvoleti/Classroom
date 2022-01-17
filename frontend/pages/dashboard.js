@@ -44,7 +44,7 @@ function TabPanel({ value, index, userId, type }) {
     return <CircularProgressComp height={"80vh"} />;
   if (studentError || teacherError) {
     console.log({ studentError, teacherError });
-    return <p>Something went wrong</p>;
+    return <p>Something went wrong. Please try refreshing the page</p>;
   }
 
   const studentClasses = studentData.allClasses;
@@ -58,7 +58,7 @@ function TabPanel({ value, index, userId, type }) {
   return (
     <div role="tabpanel">
       <Box className="center" sx={{ margin: "30px 10px" }}>
-        <ClassRooms classes={classes} />
+        <ClassRooms userId={userId} classes={classes} />
       </Box>
     </div>
   );

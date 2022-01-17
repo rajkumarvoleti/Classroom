@@ -176,7 +176,7 @@ export default function ClassCard({ id }) {
 
   if (error || unEnrollError) {
     console.log(error, unEnrollError);
-    return <p>Something went wrong</p>;
+    return <p>Something went wrong. Please try refreshing the page</p>;
   }
   const { Class } = data;
 
