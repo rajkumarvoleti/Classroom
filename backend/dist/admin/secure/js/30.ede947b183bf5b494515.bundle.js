@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[30],{485:function(t,e,n){"use strict";n.r(e);var r=n(0);const a=/^https?\:\/\//i;e.default=t=>{let{data:e}=t;if(!e)return null;/^\w+\:/.test(e)||(e="http://"+e);const n=e.replace(a,"");return Object(r.createElement)("a",{href:e},n)}}}]);

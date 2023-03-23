@@ -24,6 +24,7 @@ const getDesignTokens = (mode) => ({
           background: {
             primary: "#010100",
             secondary: "#060402",
+            
           },
           text: {
             primary: "#d5ddaf",
